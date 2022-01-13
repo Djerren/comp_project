@@ -1,3 +1,3 @@
-import networkx
+import networkx as nx
 
-# iets heel stoms
+Test_network = nx.watts_strogatz_graph(1000, 6, 0.05, seed=None)
