@@ -40,8 +40,8 @@ class Model:
         but could happen in different ways.
         """
 
-        shuffled = np.random.shuffle(np.array(self.network.nodes))
-        for i in range(number):
+        infected = np.random.choice(self.network.nodes, size=number)
+        for i in infected:
             self.network.nodes[i]["status"] = "I"
 
     def step(self):
@@ -177,7 +177,7 @@ if __name__ == "__main__":
     test_network = nx.watts_strogatz_graph(100, 6, 0.05, seed=None)
 
     test_model = Model(test_network, 0.5, 0.5, 0.125, 0.125)
-    test_model. infect(1)
+    test_model. infect(5)
     for i in range(100):
         print(test_model.get_time())
         print(test_model.get_susceptibles())
