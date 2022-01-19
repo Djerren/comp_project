@@ -254,7 +254,7 @@ class Model:
                 probabilities = np.append(probabilities, [self.mortality_rate])
                 events = np.append(events, [(node, "F")], axis=0)
 
-        if np.sum(probabilities)>0:
+        if np.sum(probabilities) > 0:
             probability_of_event = 1 - np.prod(1 - probabilities)
             time_to_next_event = (1 / probability_of_event) * np.log(1 / r)
             self.t += time_to_next_event
@@ -291,6 +291,18 @@ class Model:
 
 if __name__ == "__main__":
     # Model(network, infection_rate, incubation_rate, recovery_rate, mortality_rate, ages, vaccination_method, vaccination_rate, vaccination_start)
+
+    # small world (with the right parameters)
+    # test_network = nx.watts_strogatz_graph(1000, 6, 0.05, seed=None)
+
+    # # scale-free (with the right parameters)
+    # sf_network = nx.barabasi_albert_graph(1000, 10)
+
+    # # scale-free highly clustered (with the right parameters)
+    # sfhc_network = nx.powerlaw_cluster_graph(1000, 10, 0.05)
+
+    # more models can be found here: https://networkx.org/documentation/stable/reference/generated/networkx.generators.random_graphs.powerlaw_cluster_graph.html
+    # also has references
 
     test_network = facebook_network()
     # test_network = nx.watts_strogatz_graph(n, 6, 0.05, seed=None)
