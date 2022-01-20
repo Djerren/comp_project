@@ -254,7 +254,7 @@ if __name__ == "__main__":
     # test_network = nx.watts_strogatz_graph(1000, 6, 0.05, seed=None)
 
     # # scale-free (with the right parameters)
-    # sf_network = nx.barabasi_albert_graph(1000, 10)
+    # sf_network = nx.barabasi_albert_graph(1000, 7)
 
     # # scale-free highly clustered (with the right parameters)
     # sfhc_network = nx.powerlaw_cluster_graph(1000, 10, 0.05)
