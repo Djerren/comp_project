@@ -1,49 +1,7 @@
-from posixpath import split
 import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
-
-# helper functions: (needs seperate file but was too lazy)
-def find_other_node(edge, node):
-    """
-    This function finds the second node connected to a certain edge.
-    (There might be a better way to do this.)
-    """
-    if edge[0] == node:
-        return edge[1]
-    else:
-        return edge[0]
-
-def get_ages(number):
-    """
-    This function generates the ages of the nodes according to an age distribution.
-    """
-    # Extracts the distribution from the file
-    age_dist = []
-    file = open("ages.csv")
-    for line in file:
-        line_split = line.split(";")
-        age_dist.append(int(line_split[1]) + int(line_split[2]))
-    
-    # Generates ages according to distribution
-    ages = []
-    dist_sum = sum(age_dist)
-    for age in range(len(age_dist)):
-        ages = ages + [age] * int(number * age_dist[age] / dist_sum)
-    for i in range(number - len(ages)):
-        ages.append(np.random.randint(0,100))
-    np.random.shuffle(ages)
-    return ages
-
-def facebook_network():
-    network = nx.Graph()
-    edges = []
-    file = open("facebook_combined.txt")
-    for line in file:
-        edge = line.split()
-        edges.append((int(edge[0]),int(edge[1])))
-    network.add_edges_from(edges)
-    return network
+from helper_functions import find_other_node, get_ages, facebook_network
 
 class Model:
     def __init__(self, network, infection_rate, incubation_period, recovery_rate, mortality_rate, ages, vaccination_method, vaccination_rate, vaccination_start):
@@ -132,7 +90,7 @@ class Model:
 
         if self.finished:
             return
-        
+
         if self.t >= self.vaccination_start:
             self.vaccinate()
 
@@ -184,7 +142,7 @@ class Model:
                     p_new = [i / sum(p) for i in p]
                     transition = np.random.choice([0,1,2], p=p_new)
                     transition = np.random.choice([0,1,2], p=[6/7, 1/7, 0])
-                
+
                 if transition == 1:
                     newly_recovered = np.append(newly_recovered, [node])
                 elif transition == 2:
@@ -278,13 +236,13 @@ class Model:
 
     def get_deads(self):
         return [node for node in self.network.nodes if self.network.nodes[node]["status"] == "F"]
-    
+
     def get_unvaccinated(self):
         return [node for node in self.network.nodes if self.network.nodes[node]["vaccination"] == "NV"]
 
     def get_time(self):
         return self.t
-    
+
     def is_finished(self):
         return self.finished
 
@@ -325,7 +283,7 @@ if __name__ == "__main__":
     #     I.append(len(test_model.get_infecteds()) / n * 100)
     #     R.append(len(test_model.get_recovereds()) / n * 100)
     #     D.append(len(test_model.get_deads()) / n * 100)
-    
+
     # print("infected:", n - len(test_model.get_susceptibles()))
     # print("dead:", len(test_model.get_deads()))
     # plt.plot(t, S, label="S")
@@ -337,7 +295,7 @@ if __name__ == "__main__":
     # plt.show()
 
     iterations = 5
-    
+
     test_model = Model(test_network, 0.25, 0.2, 0.125, 0.125, ages, "age", int(n/100), 0)
     infected_age = 0
     dead_age = 0
@@ -355,7 +313,7 @@ if __name__ == "__main__":
     test_model = Model(test_network, 0.25, 0.2, 0.125, 0.125, ages, "degree", int(n/100), 0)
     infected_degree = 0
     dead_degree = 0
-    
+
     for i in range(iterations):
         print("degree:", i)
         test_model.infect(1)
