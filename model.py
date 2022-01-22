@@ -134,11 +134,13 @@ class Model:
             elif self.network.nodes[node]["status"] == "I":
                 if self.network.nodes[node]["vaccination"] == "NV":
                     mortality_rate = (self.network.nodes[node]["age"] / 100) ** 5 / 5
-                    p = [self.infection_time - 1, 1 - mortality_rate, mortality_rate] / self.infection_time
+                    p_temp = [self.infection_time - 1, 1 - mortality_rate, mortality_rate]
+                    p = [rate / self.infection_time for rate in p_temp]
                     transition = np.random.choice([0,1,2], p=p)
                 else:
                     mortality_rate = (self.network.nodes[node]["age"] / 100) ** 5 / 5 * self.vaccine_mortality_effectiveness
-                    p = [self.infection_time - 1, 1 - mortality_rate, mortality_rate] / self.infection_time
+                    p_temp = [self.infection_time - 1, 1 - mortality_rate, mortality_rate]
+                    p = [rate / self.infection_time for rate in p_temp]
                     transition = np.random.choice([0,1,2], p=p)
 
                 if transition == 1:
