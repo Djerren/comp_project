@@ -296,15 +296,9 @@ if __name__ == "__main__":
     # plt.legend()
     # plt.show()
 
-<<<<<<< HEAD
     iterations = 1
     
     test_model = Model(test_network, 0.25, 0.2, 0.125, 0.125, ages, int(n/100), "age")
-=======
-    iterations = 5
-
-    test_model = Model(test_network, 0.25, 0.2, 0.125, 0.125, ages, "age", int(n/100), 0)
->>>>>>> 667e44acefd7d700711c21f56ff4f3d96ae6d260
     infected_age = 0
     dead_age = 0
 
