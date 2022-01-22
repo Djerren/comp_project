@@ -4,11 +4,9 @@ import matplotlib.pyplot as plt
 from helper_functions import find_other_node, get_ages, facebook_network
 
 class Model:
-    def __init__(self, network, infection_rate, incubation_period, recovery_rate, mortality_rate, infection_time, ages, vaccination_rate, vaccination_method="random", vaccination_start=0, vaccine_spread_effectiveness=0.05, vaccine_mortality_effectiveness=0.1):
+    def __init__(self, network, infection_rate, incubation_period, infection_time, ages, vaccination_rate, vaccination_method="random", vaccination_start=0, vaccine_spread_effectiveness=0.05, vaccine_mortality_effectiveness=0.1):
         self.infection_rate = infection_rate
         self.incubation_period = incubation_period
-        self.recovery_rate = recovery_rate
-        self.mortality_rate = mortality_rate
         self.infection_time = infection_time
         self.ages = ages
         self.vaccination_method = vaccination_method
@@ -136,15 +134,12 @@ class Model:
             elif self.network.nodes[node]["status"] == "I":
                 if self.network.nodes[node]["vaccination"] == "NV":
                     mortality_rate = (self.network.nodes[node]["age"] / 100) ** 5 / 5
-                    p = [self.infection_time, 1 - mortality_rate, mortality_rate]
-                    p_new = [i / sum(p) for i in p]
-                    transition = np.random.choice([0,1,2], p=p_new)
+                    p = [self.infection_time - 1, 1 - mortality_rate, mortality_rate] / self.infection_time
+                    transition = np.random.choice([0,1,2], p=p)
                 else:
                     mortality_rate = (self.network.nodes[node]["age"] / 100) ** 5 / 5 * self.vaccine_mortality_effectiveness
-                    p = [self.infection_time, 1 - mortality_rate, mortality_rate]
-                    p_new = [i / sum(p) for i in p]
-                    transition = np.random.choice([0,1,2], p=p_new)
-                    transition = np.random.choice([0,1,2], p=[6/7, 1/7, 0])
+                    p = [self.infection_time - 1, 1 - mortality_rate, mortality_rate] / self.infection_time
+                    transition = np.random.choice([0,1,2], p=p)
 
                 if transition == 1:
                     newly_recovered = np.append(newly_recovered, [node])
@@ -164,66 +159,66 @@ class Model:
             self.finished = True
         self.t += 1
 
-    def step_complicated(self):
-        """
-        This function performs one timestep of the model using the complicated method.
-        """
+    # def step_complicated(self):
+    #     """
+    #     This function performs one timestep of the model using the complicated method.
+    #     """
 
-        if self.finished:
-            return
+    #     if self.finished:
+    #         return
 
-        # These two values will help us to decide a time when the next event will happen.
-        r = np.random.uniform()
+    #     # These two values will help us to decide a time when the next event will happen.
+    #     r = np.random.uniform()
 
-        # we start with elements in the list to make the appends work, there might be a nicer way to do this.
-        probabilities = np.array([0])
-        events = np.array([(0,0)])
-        for node in self.network.nodes:
-            # If the current node is susceptible it has a chance to be exposed to the virus via
-            # its neighbours. The model this is based on also includes a probability to be exposed
-            # via any other person in the network. We could add this later (or not).
-            if self.network.nodes[node]["status"] == "S":
-                infected_neighbours = 0
-                for edge in self.network.edges(node):
-                    neighbour = find_other_node(edge, node)
-                    if self.network.nodes[neighbour]["status"] == "I":
-                        if self.network.nodes[neighbour]["vaccination"] == "NV":
-                            infected_neighbours += 1
-                        else:
-                            infected_neighbours += 0.2
+    #     # we start with elements in the list to make the appends work, there might be a nicer way to do this.
+    #     probabilities = np.array([0])
+    #     events = np.array([(0,0)])
+    #     for node in self.network.nodes:
+    #         # If the current node is susceptible it has a chance to be exposed to the virus via
+    #         # its neighbours. The model this is based on also includes a probability to be exposed
+    #         # via any other person in the network. We could add this later (or not).
+    #         if self.network.nodes[node]["status"] == "S":
+    #             infected_neighbours = 0
+    #             for edge in self.network.edges(node):
+    #                 neighbour = find_other_node(edge, node)
+    #                 if self.network.nodes[neighbour]["status"] == "I":
+    #                     if self.network.nodes[neighbour]["vaccination"] == "NV":
+    #                         infected_neighbours += 1
+    #                     else:
+    #                         infected_neighbours += 0.2
 
-                exposed_prob = 0
-                if len(self.network.edges(node)):
-                    if self.network.nodes[node]["vaccination"] == "NV":
-                        exposed_prob = (infected_neighbours / len(self.network.edges(node))) * self.infection_rate
-                    else:
-                        exposed_prob = (infected_neighbours / len(self.network.edges(node))) * self.infection_rate * 0.2
+    #             exposed_prob = 0
+    #             if len(self.network.edges(node)):
+    #                 if self.network.nodes[node]["vaccination"] == "NV":
+    #                     exposed_prob = (infected_neighbours / len(self.network.edges(node))) * self.infection_rate
+    #                 else:
+    #                     exposed_prob = (infected_neighbours / len(self.network.edges(node))) * self.infection_rate * 0.2
 
-                probabilities = np.append(probabilities, [exposed_prob])
-                events = np.append(events, [(node, "E")], axis=0)
+    #             probabilities = np.append(probabilities, [exposed_prob])
+    #             events = np.append(events, [(node, "E")], axis=0)
 
-            # If the current node is exposed, every day it has a chance to become infected/infectuous.
-            elif self.network.nodes[node]["status"] == "E":
-                probabilities = np.append(probabilities, [self.incubation_period])
-                events = np.append(events, [(node, "I")], axis=0)
+    #         # If the current node is exposed, every day it has a chance to become infected/infectuous.
+    #         elif self.network.nodes[node]["status"] == "E":
+    #             probabilities = np.append(probabilities, [self.incubation_period])
+    #             events = np.append(events, [(node, "I")], axis=0)
 
-            # If the current node is infected, every day it has a chance to recover and a chance to die.
-            elif self.network.nodes[node]["status"] == "I":
-                probabilities = np.append(probabilities, [self.recovery_rate])
-                events = np.append(events, [(node, "R")], axis=0)
+    #         # If the current node is infected, every day it has a chance to recover and a chance to die.
+    #         elif self.network.nodes[node]["status"] == "I":
+    #             probabilities = np.append(probabilities, [self.recovery_rate])
+    #             events = np.append(events, [(node, "R")], axis=0)
 
-                probabilities = np.append(probabilities, [self.mortality_rate])
-                events = np.append(events, [(node, "F")], axis=0)
+    #             probabilities = np.append(probabilities, [self.mortality_rate])
+    #             events = np.append(events, [(node, "F")], axis=0)
 
-        if np.sum(probabilities) > 0:
-            probability_of_event = 1 - np.prod(1 - probabilities)
-            time_to_next_event = (1 / probability_of_event) * np.log(1 / r)
-            self.t += time_to_next_event
+    #     if np.sum(probabilities) > 0:
+    #         probability_of_event = 1 - np.prod(1 - probabilities)
+    #         time_to_next_event = (1 / probability_of_event) * np.log(1 / r)
+    #         self.t += time_to_next_event
 
-            event = np.random.choice(np.arange(len(events)), p=probabilities/np.sum(probabilities))
-            self.network.nodes[int(events[event][0])]["status"] = events[event][1]
-        else:
-            self.finished = True
+    #         event = np.random.choice(np.arange(len(events)), p=probabilities/np.sum(probabilities))
+    #         self.network.nodes[int(events[event][0])]["status"] = events[event][1]
+    #     else:
+    #         self.finished = True
 
     def get_infecteds(self):
         return [node for node in self.network.nodes if self.network.nodes[node]["status"] == "I"]
@@ -299,7 +294,7 @@ if __name__ == "__main__":
 
     iterations = 1
     
-    test_model = Model(test_network, 0.25, 0.2, 0.125, 0.125, 6, ages, int(n/100), "age")
+    test_model = Model(test_network, 0.25, 0.2, 7, ages, int(n/100), "age")
     infected_age = 0
     dead_age = 0
 
@@ -313,7 +308,7 @@ if __name__ == "__main__":
         test_model.reset()
 
 
-    test_model = Model(test_network, 0.25, 0.2, 0.125, 0.125, 6, ages, int(n/100), "degree")
+    test_model = Model(test_network, 0.25, 0.2, 7, ages, int(n/100), "degree")
     infected_degree = 0
     dead_degree = 0
 
