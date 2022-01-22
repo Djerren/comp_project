@@ -4,11 +4,12 @@ import matplotlib.pyplot as plt
 from helper_functions import find_other_node, get_ages, facebook_network
 
 class Model:
-    def __init__(self, network, infection_rate, incubation_period, recovery_rate, mortality_rate, ages, vaccination_rate, vaccination_method="random", vaccination_start=0, vaccine_spread_effectiveness=0.05, vaccine_mortality_effectiveness=0.1):
+    def __init__(self, network, infection_rate, incubation_period, recovery_rate, mortality_rate, infection_time, ages, vaccination_rate, vaccination_method="random", vaccination_start=0, vaccine_spread_effectiveness=0.05, vaccine_mortality_effectiveness=0.1):
         self.infection_rate = infection_rate
         self.incubation_period = incubation_period
         self.recovery_rate = recovery_rate
         self.mortality_rate = mortality_rate
+        self.infection_time = infection_time
         self.ages = ages
         self.vaccination_method = vaccination_method
         self.vaccination_rate = vaccination_rate
@@ -134,13 +135,13 @@ class Model:
             # If the current node is infected, every day it has a chance to recover and a chance to die.
             elif self.network.nodes[node]["status"] == "I":
                 if self.network.nodes[node]["vaccination"] == "NV":
-                    new_mortality = (self.network.nodes[node]["age"] / 100) ** 5 / 5
-                    p = [6, 1 - new_mortality, new_mortality]
+                    mortality_rate = (self.network.nodes[node]["age"] / 100) ** 5 / 5
+                    p = [self.infection_time, 1 - mortality_rate, mortality_rate]
                     p_new = [i / sum(p) for i in p]
                     transition = np.random.choice([0,1,2], p=p_new)
                 else:
-                    new_mortality = (self.network.nodes[node]["age"] / 100) ** 5 / 5 * self.vaccine_mortality_effectiveness
-                    p = [6, 1 - new_mortality, new_mortality]
+                    mortality_rate = (self.network.nodes[node]["age"] / 100) ** 5 / 5 * self.vaccine_mortality_effectiveness
+                    p = [self.infection_time, 1 - mortality_rate, mortality_rate]
                     p_new = [i / sum(p) for i in p]
                     transition = np.random.choice([0,1,2], p=p_new)
                     transition = np.random.choice([0,1,2], p=[6/7, 1/7, 0])
@@ -298,7 +299,7 @@ if __name__ == "__main__":
 
     iterations = 1
     
-    test_model = Model(test_network, 0.25, 0.2, 0.125, 0.125, ages, int(n/100), "age")
+    test_model = Model(test_network, 0.25, 0.2, 0.125, 0.125, 6, ages, int(n/100), "age")
     infected_age = 0
     dead_age = 0
 
@@ -312,7 +313,7 @@ if __name__ == "__main__":
         test_model.reset()
 
 
-    test_model = Model(test_network, 0.25, 0.2, 0.125, 0.125, ages, int(n/100), "degree")
+    test_model = Model(test_network, 0.25, 0.2, 0.125, 0.125, 6, ages, int(n/100), "degree")
     infected_degree = 0
     dead_degree = 0
 
