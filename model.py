@@ -46,7 +46,7 @@ def facebook_network():
     return network
 
 class Model:
-    def __init__(self, network, infection_rate, incubation_period, recovery_rate, mortality_rate, ages, vaccination_method, vaccination_rate, vaccination_start):
+    def __init__(self, network, infection_rate, incubation_period, recovery_rate, mortality_rate, ages, vaccination_rate, vaccination_method="random", vaccination_start=0, vaccine_spread_effectiveness=0.05, vaccine_mortality_effectiveness=0.1):
         self.infection_rate = infection_rate
         self.incubation_period = incubation_period
         self.recovery_rate = recovery_rate
@@ -55,6 +55,8 @@ class Model:
         self.vaccination_method = vaccination_method
         self.vaccination_rate = vaccination_rate
         self.vaccination_start = vaccination_start
+        self.vaccine_spread_effectiveness = vaccine_spread_effectiveness
+        self.vaccine_mortality_effectiveness = vaccine_mortality_effectiveness
 
         self.network = network
         self.t = 0
@@ -154,14 +156,14 @@ class Model:
                     if self.network.nodes[neighbour]["status"] == "I":
                         infected_neighbours += 1
                     else:
-                        infected_neighbours += 0.05
+                        infected_neighbours += self.vaccine_spread_effectiveness
 
                 exposed_prob = 0
                 if len(self.network.edges(node)):
                     if self.network.nodes[node]["vaccination"] == "NV":
                         exposed_prob = (infected_neighbours / len(self.network.edges(node))) * self.infection_rate
                     else:
-                        exposed_prob = (infected_neighbours / len(self.network.edges(node))) * self.infection_rate * 0.05
+                        exposed_prob = (infected_neighbours / len(self.network.edges(node))) * self.infection_rate * self.vaccine_spread_effectiveness
 
                 if np.random.choice([0,1], p=[1 - exposed_prob, exposed_prob]):
                     newly_exposed = np.append(newly_exposed, [node])
@@ -179,7 +181,7 @@ class Model:
                     p_new = [i / sum(p) for i in p]
                     transition = np.random.choice([0,1,2], p=p_new)
                 else:
-                    new_mortality = (self.network.nodes[node]["age"] / 100) ** 5 / 5 * 0.1
+                    new_mortality = (self.network.nodes[node]["age"] / 100) ** 5 / 5 * self.vaccine_mortality_effectiveness
                     p = [6, 1 - new_mortality, new_mortality]
                     p_new = [i / sum(p) for i in p]
                     transition = np.random.choice([0,1,2], p=p_new)
@@ -336,9 +338,9 @@ if __name__ == "__main__":
     # plt.legend()
     # plt.show()
 
-    iterations = 5
+    iterations = 1
     
-    test_model = Model(test_network, 0.25, 0.2, 0.125, 0.125, ages, "age", int(n/100), 0)
+    test_model = Model(test_network, 0.25, 0.2, 0.125, 0.125, ages, int(n/100), "age")
     infected_age = 0
     dead_age = 0
 
@@ -352,7 +354,7 @@ if __name__ == "__main__":
         test_model.reset()
 
 
-    test_model = Model(test_network, 0.25, 0.2, 0.125, 0.125, ages, "degree", int(n/100), 0)
+    test_model = Model(test_network, 0.25, 0.2, 0.125, 0.125, ages, int(n/100), "degree")
     infected_degree = 0
     dead_degree = 0
     
