@@ -42,8 +42,9 @@ class Model:
         this function infects people in the network. Currently does this randomly
         but could happen in different ways.
         """
-        infected = np.random.choice(self.network.nodes, size=number)
-        for i in infected:
+        infected = np.copy(self.network.nodes)
+        np.random.shuffle(infected)
+        for i in infected[0:number]:
             self.network.nodes[i]["status"] = "I"
 
     def vaccinate(self):
