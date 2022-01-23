@@ -1,7 +1,8 @@
 import networkx as nx
 import numpy as np
-import matplotlib.pyplot as plt
-from helper_functions import find_other_node, get_ages, facebook_network
+#import matplotlib.pyplot as plt
+from functions.helper_functions import find_other_node
+#from visualise import draw_graph_simple
 
 class Model:
     def __init__(self, network, infection_rate, incubation_period, infection_time, ages, vaccination_rate, vaccination_method="random", vaccination_start=0, vaccine_spread_effectiveness=0.05, vaccine_mortality_effectiveness=0.1):
@@ -245,82 +246,3 @@ class Model:
 
     def is_finished(self):
         return self.finished
-
-
-if __name__ == "__main__":
-    # Model(network, infection_rate, incubation_rate, recovery_rate, mortality_rate, ages, vaccination_method, vaccination_rate, vaccination_start)
-
-    # small world (with the right parameters)
-    # test_network = nx.watts_strogatz_graph(1000, 6, 0.05, seed=None)
-
-    # # scale-free (with the right parameters)
-    # sf_network = nx.barabasi_albert_graph(1000, 7)
-
-    # # scale-free highly clustered (with the right parameters)
-    # sfhc_network = nx.powerlaw_cluster_graph(1000, 10, 0.05)
-
-    # more models can be found here: https://networkx.org/documentation/stable/reference/generated/networkx.generators.random_graphs.powerlaw_cluster_graph.html
-    # also has references
-
-    test_network = facebook_network()
-    # test_network = nx.watts_strogatz_graph(n, 6, 0.05, seed=None)
-    n = len(test_network.nodes)
-    ages = get_ages(n)
-
-    # test_model = Model(test_network, 0.25, 0.2, 0.125, 0.125, ages, "degree", int(n/100), 20)
-    # t = []
-    # S = []
-    # E = []
-    # I = []
-    # R = []
-    # D = []
-    # test_model.infect(1)
-    # while not test_model.is_finished():
-    #     test_model.step()
-    #     t.append(test_model.get_time())
-    #     S.append(len(test_model.get_susceptibles()) / n * 100)
-    #     E.append(len(test_model.get_exposeds()) / n * 100)
-    #     I.append(len(test_model.get_infecteds()) / n * 100)
-    #     R.append(len(test_model.get_recovereds()) / n * 100)
-    #     D.append(len(test_model.get_deads()) / n * 100)
-
-    # print("infected:", n - len(test_model.get_susceptibles()))
-    # print("dead:", len(test_model.get_deads()))
-    # plt.plot(t, S, label="S")
-    # plt.plot(t, E, label="E")
-    # plt.plot(t, I, label="I")
-    # plt.plot(t, R, label="R")
-    # plt.plot(t, D, label="D")
-    # plt.legend()
-    # plt.show()
-
-    iterations = 1
-    
-    test_model = Model(test_network, 0.25, 0.2, 7, ages, int(n/100), "age")
-    infected_age = 0
-    dead_age = 0
-
-    for i in range(iterations):
-        print("age:", i)
-        test_model.infect(1)
-        while not test_model.is_finished():
-            test_model.step()
-        dead_age += len(test_model.get_deads()) / iterations
-        infected_age += (n - len(test_model.get_susceptibles())) / iterations
-        test_model.reset()
-
-
-    test_model = Model(test_network, 0.25, 0.2, 7, ages, int(n/100), "degree")
-    infected_degree = 0
-    dead_degree = 0
-
-    for i in range(iterations):
-        print("degree:", i)
-        test_model.infect(1)
-        while not test_model.is_finished():
-            test_model.step()
-        dead_degree += len(test_model.get_deads()) / iterations
-        infected_degree += (n - len(test_model.get_susceptibles())) / iterations
-        test_model.reset()
-
-    print(f"age:\ninfected: {infected_age}\ndead: {dead_age}\ndegree:\ninfected: {infected_degree}\ndead: {dead_degree}")

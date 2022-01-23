@@ -18,7 +18,7 @@ def get_ages(number):
     """
     # Extracts the distribution from the file
     age_dist = []
-    file = open("ages.csv")
+    file = open("data/ages.csv")
     for line in file:
         line_split = line.split(";")
         age_dist.append(int(line_split[1]) + int(line_split[2]))
@@ -36,7 +36,7 @@ def get_ages(number):
 def facebook_network():
     network = nx.Graph()
     edges = []
-    file = open("facebook_combined.txt")
+    file = open("data/facebook_combined.txt")
     for line in file:
         edge = line.split()
         edges.append((int(edge[0]),int(edge[1])))

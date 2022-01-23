@@ -10,13 +10,18 @@ Since it is practically impossible to vaccinate every person on earth at once, i
 We will compare these 3 strategies to each-other and also to a situation where no-one is vaccinated and are interested in the spread of the virus (number of people infected) and the death-toll. We expect that the strategy to vaccinate people that come in to contact with a lot of others will be most effective to mitigate the spread of the virus. We also expect that the strategy of vaccinating vulnerable people will result in the lowest death-toll. Lastly we expect the random vaccination strategy to be less effective in both aspects than the other strategies, but more effective than not vaccinating at all.
 
 ## Usage
-Install dependencies:
+#### Install dependencies:
 ```
 pip3 install -r requirements.txt
 ```
+#### Run the program:
+Go to the right directory:
+```
+cd code
+```
 To run the program:
 ```
-python3 model.py
+python3 main.py
 ```
 
 ## Authors and acknowledgment
