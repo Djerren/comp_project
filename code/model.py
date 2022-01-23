@@ -241,6 +241,9 @@ class Model:
     def get_unvaccinated(self):
         return [node for node in self.network.nodes if self.network.nodes[node]["vaccination"] == "NV"]
 
+    def get_vaccinated(self):
+        return [node for node in self.network.nodes if self.network.nodes[node]["vaccination"] == "V"]
+
     def get_time(self):
         return self.t
 
