@@ -1,6 +1,6 @@
 import networkx as nx
 import numpy as np
-from code.helper_functions import find_other_node
+from helper_functions import find_other_node
 
 class Model:
     def __init__(self, network, infection_rate, incubation_period, infection_time, ages, vaccination_rate, vaccination_method="random", vaccination_start=0, vaccine_spread_effectiveness=0.05, vaccine_mortality_effectiveness=0.1):
@@ -110,9 +110,10 @@ class Model:
                 for edge in self.network.edges(node):
                     neighbour = find_other_node(edge, node)
                     if self.network.nodes[neighbour]["status"] == "I":
-                        infected_neighbours += 1
-                    else:
-                        infected_neighbours += self.vaccine_spread_effectiveness
+                        if self.network.nodes[node]["vaccination"] == "NV":
+                            infected_neighbours += 1
+                        else:
+                            infected_neighbours += self.vaccine_spread_effectiveness
 
                 exposed_prob = 0
                 if len(self.network.edges(node)):
