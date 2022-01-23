@@ -59,8 +59,9 @@ class Model:
             return
         # Random vaccination
         if self.vaccination_method == "random":
-            vaccinated = np.random.choice(self.get_unvaccinated(), size=self.vaccination_rate)
-            for i in vaccinated:
+            vaccinated = np.copy(self.get_unvaccinated())
+            np.random.shuffle(vaccinated)
+            for i in vaccinated[0:self.vaccination_rate]:
                 self.network.nodes[i]["vaccination"] = "V"
         # Age based vaccination
         elif self.vaccination_method == "age":
