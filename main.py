@@ -1,7 +1,7 @@
 import networkx as nx
-from functions.helper_functions import get_ages, facebook_network
-from functions.model import Model
-from functions.visualise import draw_graph_simple
+from code.helper_functions import get_ages, facebook_network
+from code.model import Model
+from code.visualise import draw_graph_simple, print_network
 
 def main():
     # Model(network, infection_rate, incubation_rate, recovery_rate, mortality_rate, ages, vaccination_method, vaccination_rate, vaccination_start)
@@ -73,6 +73,7 @@ def main():
         draw_graph_simple(susceptible, infected, dead, recovered, time)
         dead_age += len(test_model.get_deads()) / iterations
         infected_age += (n - len(test_model.get_susceptibles())) / iterations
+        #print_network()
         test_model.reset()
 
 

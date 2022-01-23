@@ -15,11 +15,6 @@ We will compare these 3 strategies to each-other and also to a situation where n
 pip3 install -r requirements.txt
 ```
 #### Run the program:
-Go to the right directory:
-```
-cd code
-```
-To run the program:
 ```
 python3 main.py
 ```

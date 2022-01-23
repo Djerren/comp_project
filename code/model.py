@@ -1,6 +1,6 @@
 import networkx as nx
 import numpy as np
-from functions.helper_functions import find_other_node
+from code.helper_functions import find_other_node
 
 class Model:
     def __init__(self, network, infection_rate, incubation_period, infection_time, ages, vaccination_rate, vaccination_method="random", vaccination_start=0, vaccine_spread_effectiveness=0.05, vaccine_mortality_effectiveness=0.1):

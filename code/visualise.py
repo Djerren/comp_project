@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import networkx as nx
 #from matplotlib.animation import
 
 def draw_graph_simple(susceptible, infected, dead, recovered, time):
@@ -12,13 +13,14 @@ def draw_graph_simple(susceptible, infected, dead, recovered, time):
     plt.plot(time, dead, label="Dead")
     plt.plot(time, recovered, label="Recovered")
 
-    plt.xlabel("Time")
+    plt.xlabel("Time in days")
     plt.ylabel("Number of persons")
     plt.legend()
     plt.show()
 
-def print_network():
+def print_network(network):
     """
     Print the final network.
     """
+    nx.draw()
     pass
