@@ -1,7 +1,5 @@
 import networkx as nx
-import numpy as np
-import matplotlib.pyplot as plt
-from functions.helper_functions import find_other_node, get_ages, facebook_network
+from functions.helper_functions import get_ages, facebook_network
 from functions.model import Model
 from functions.visualise import draw_graph_simple
 

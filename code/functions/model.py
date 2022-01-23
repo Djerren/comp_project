@@ -1,8 +1,6 @@
 import networkx as nx
 import numpy as np
-#import matplotlib.pyplot as plt
 from functions.helper_functions import find_other_node
-#from visualise import draw_graph_simple
 
 class Model:
     def __init__(self, network, infection_rate, incubation_period, infection_time, ages, vaccination_rate, vaccination_method="random", vaccination_start=0, vaccine_spread_effectiveness=0.05, vaccine_mortality_effectiveness=0.1):
