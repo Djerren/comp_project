@@ -2,14 +2,10 @@ from os.path import exists
 from code.helper_functions import facebook_network
 from code.model import Model
 
-def main():
+def test(iterations, infection_rate, incubation_period, infection_time, vaccination_time):
     test_network = facebook_network()
     n = len(test_network.nodes)
-    iterations = 2
-    infection_rate = 0.5
-    incubation_period = 0.2
-    infection_time = 7
-    vaccination_rate = int(n/100)
+    vaccination_rate = int(n/vaccination_time)
 
     test_model = Model(test_network, infection_rate, incubation_period, infection_time, vaccination_rate, "age")
     lines = 0
@@ -44,6 +40,43 @@ def main():
             test_model.step()
         degree_stats.write(f"{i};{test_model.get_time()};{n - len(test_model.get_susceptibles())};{len(test_model.get_deads())}\n")
     degree_stats.close()
+
+def print_stats(age_file, degree_file):
+    age_stats = open(age_file)
+    lines = 0
+    age_infected = 0
+    age_dead = 0
+    for line in age_stats:
+        lines += 1
+        line_split = line.split(";")
+        age_infected += int(line_split[2])
+        age_dead += int(line_split[3])
+    age_stats.close()
+    age_infected /= lines
+    age_dead /= lines
+
+    degree_stats = open(degree_file)
+    lines = 0
+    degree_infected = 0
+    degree_dead = 0
+    for line in degree_stats:
+        lines += 1
+        line_split = line.split(";")
+        degree_infected += int(line_split[2])
+        degree_dead += int(line_split[3])
+    degree_stats.close()
+    degree_infected /= lines
+    degree_dead /= lines
+
+    print("age:")
+    print(f"infected: {round(age_infected, 2)}, dead: {round(age_dead, 2)}")
+    print("degree:")
+    print(f"infected: {round(degree_infected, 2)}, dead: {round(degree_dead, 2)}")
+
+
+def main():
+    #test(20, 0.5, 0.2, 7, 100)
+    print_stats("stats/fb_age_0.5_0.2_7_40.txt", "stats/fb_degree_0.5_0.2_7_40.txt")
 
 if __name__ == "__main__":
     main()
