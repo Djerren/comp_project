@@ -1,18 +1,19 @@
+from tkinter import N
 import networkx as nx
 import numpy as np
-from code.helper_functions import find_other_node
+from code.helper_functions import find_other_node, get_ages
 
 class Model:
-    def __init__(self, network, infection_rate, incubation_period, infection_time, ages, vaccination_rate, vaccination_method="random", vaccination_start=0, vaccine_spread_effectiveness=0.05, vaccine_mortality_effectiveness=0.1):
+    def __init__(self, network, infection_rate, incubation_period, infection_time, vaccination_rate, vaccination_method="random", vaccination_start=0, vaccine_spread_effectiveness=0.05, vaccine_mortality_effectiveness=0.1, random_seed=0):
         self.infection_rate = infection_rate
         self.incubation_period = incubation_period
         self.infection_time = infection_time
-        self.ages = ages
         self.vaccination_method = vaccination_method
         self.vaccination_rate = vaccination_rate
         self.vaccination_start = vaccination_start
         self.vaccine_spread_effectiveness = vaccine_spread_effectiveness
         self.vaccine_mortality_effectiveness = vaccine_mortality_effectiveness
+        np.random.seed(random_seed)
 
         self.network = network
         self.t = 0
@@ -22,18 +23,23 @@ class Model:
         nx.set_node_attributes(self.network, "S", "status")
         nx.set_node_attributes(self.network, "NV", "vaccination")
         nx.set_node_attributes(self.network, 0, "age")
-        for i in range(len(self.network.nodes)):
-            self.network.nodes[i]["age"] = self.ages[i]
 
-    def reset(self):
+        ages = get_ages(len(self.network.nodes))
+        for i in range(len(self.network.nodes)):
+            self.network.nodes[i]["age"] = ages[i]
+
+    def reset(self, random_seed=0):
         """
         This function sets the status of every node in the network back to susceptible
         """
+        np.random.seed(random_seed)
         nx.set_node_attributes(self.network, "S", "status")
         nx.set_node_attributes(self.network, "NV", "vaccination")
         nx.set_node_attributes(self.network, 0, "age")
+
+        ages = get_ages(len(self.network.nodes))
         for i in range(len(self.network.nodes)):
-            self.network.nodes[i]["age"] = self.ages[i]
+            self.network.nodes[i]["age"] = ages[i]
         self.t = 0
         self.finished = False
 
