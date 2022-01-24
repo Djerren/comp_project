@@ -4,29 +4,19 @@ import numpy as np
 from code.helper_functions import find_other_node, get_ages
 
 class Model:
-    def __init__(self, network, infection_rate, incubation_period, infection_time, vaccination_rate, vaccination_method="random", vaccination_start=0, vaccine_spread_effectiveness=0.05, vaccine_mortality_effectiveness=0.1, random_seed=0):
+    def __init__(self, network, infection_rate, incubation_period, infection_time,
+                 vaccination_rate, vaccination_method="random", vaccine_spread_effectiveness=0.05, 
+                 vaccine_mortality_effectiveness=0.1, random_seed=0):
+        self.network = network
         self.infection_rate = infection_rate
         self.incubation_period = incubation_period
         self.infection_time = infection_time
-        self.vaccination_method = vaccination_method
         self.vaccination_rate = vaccination_rate
-        self.vaccination_start = vaccination_start
+        self.vaccination_method = vaccination_method
         self.vaccine_spread_effectiveness = vaccine_spread_effectiveness
         self.vaccine_mortality_effectiveness = vaccine_mortality_effectiveness
-        np.random.seed(random_seed)
-
-        self.network = network
-        self.t = 0
-        self.finished = False
-
-        # We keep track of the status, vaccination and age of each node (person)
-        nx.set_node_attributes(self.network, "S", "status")
-        nx.set_node_attributes(self.network, "NV", "vaccination")
-        nx.set_node_attributes(self.network, 0, "age")
-
-        ages = get_ages(len(self.network.nodes))
-        for i in range(len(self.network.nodes)):
-            self.network.nodes[i]["age"] = ages[i]
+        
+        self.reset(random_seed)
 
     def reset(self, random_seed=0):
         """
@@ -99,8 +89,7 @@ class Model:
         if self.finished:
             return
 
-        if self.t >= self.vaccination_start:
-            self.vaccinate()
+        self.vaccinate()
 
         # We change the status of the nodes at the very end of one time step. This
         # way, we make sure that changes this time step do not affect others within the same
