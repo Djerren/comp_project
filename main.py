@@ -1,7 +1,7 @@
 import networkx as nx
 from code.helper_functions import facebook_network
 from code.model import Model
-from code.visualise import draw_graph_simple, print_network
+from code.visualise import draw_graph_simple, print_network, boxplot
 
 def main():
     # Model(network, infection_rate, incubation_rate, recovery_rate, mortality_rate, ages, vaccination_method, vaccination_rate, vaccination_start)
@@ -96,4 +96,5 @@ def main():
     print(f"age:\ninfected: {infected_age}\ndead: {dead_age}\ndegree:\ninfected: {infected_degree}\ndead: {dead_degree}")
 
 if __name__ == "__main__":
-    main()
+    #main()
+    boxplot("stats/fb_age_0.5_0.2_7_40.txt", "stats/fb_degree_0.5_0.2_7_40.txt")
