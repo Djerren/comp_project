@@ -67,6 +67,6 @@ def boxplot(age_file, degree_file, random_file, none_file):
     plt.subplot(2, 1, 1)
     plt.boxplot([none_deaths, random_deaths, age_deaths, degree_deaths])
     plt.subplot(2, 1, 2)
-    plt.boxplot([none_deaths, random_deaths, age_infected, degree_infected])
+    plt.boxplot([none_infected, random_infected, age_infected, degree_infected])
 
     plt.show()
