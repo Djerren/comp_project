@@ -5,7 +5,7 @@ from code.helper_functions import find_other_node, get_ages
 
 class Model:
     def __init__(self, network, infection_rate, incubation_period, infection_time,
-                 vaccination_rate, vaccination_method="random", vaccine_spread_effectiveness=0.05, 
+                 vaccination_rate, vaccination_method="random", vaccine_spread_effectiveness=0.05,
                  vaccine_mortality_effectiveness=0.1, random_seed=0):
         self.network = network
         self.infection_rate = infection_rate
@@ -15,7 +15,7 @@ class Model:
         self.vaccination_method = vaccination_method
         self.vaccine_spread_effectiveness = vaccine_spread_effectiveness
         self.vaccine_mortality_effectiveness = vaccine_mortality_effectiveness
-        
+
         self.reset(random_seed)
 
     def reset(self, random_seed=0):
@@ -50,6 +50,9 @@ class Model:
          - age:    vaccination is done in order of age (high to low)
          - degree: vaccination is done in order of node degree (high to low)
         """
+        if self.vaccination_method == "none":
+            return
+
         if len(self.get_unvaccinated()) < self.vaccination_rate:
             nx.set_node_attributes(self.network, "V", "vaccination")
             return

@@ -25,7 +25,7 @@ def print_network(network):
     nx.draw()
     pass
 
-def boxplot(age_file, degree_file):
+def boxplot(age_file, degree_file, random_file, none_file):
     age_stats = open(age_file)
     age_deaths = []
     age_infected = []
@@ -45,10 +45,28 @@ def boxplot(age_file, degree_file):
         degree_infected.append(int(line_split[2]))
         degree_deaths.append(int(line_split[3]))
 
+    random_stats = open(random_file)
+    random_deaths = []
+    random_infected = []
+
+    for line in random_stats:
+        line_split = line.split(";")
+        random_infected.append(int(line_split[2]))
+        random_deaths.append(int(line_split[3]))
+
+    none_stats = open(none_file)
+    none_deaths = []
+    none_infected = []
+
+    for line in none_stats:
+        line_split = line.split(";")
+        none_infected.append(int(line_split[2]))
+        none_deaths.append(int(line_split[3]))
+
     plt.subplots(2, 1)
     plt.subplot(2, 1, 1)
-    plt.boxplot([age_deaths, degree_deaths])
+    plt.boxplot([none_deaths, random_deaths, age_deaths, degree_deaths])
     plt.subplot(2, 1, 2)
-    plt.boxplot([age_infected, degree_infected])
+    plt.boxplot([none_deaths, random_deaths, age_infected, degree_infected])
 
     plt.show()

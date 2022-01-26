@@ -2,28 +2,29 @@ from os.path import exists
 from code.helper_functions import facebook_network
 from code.model import Model
 
-def test(iterations, infection_rate, incubation_period, infection_time, vaccination_time):
+def facebook_test(vax_strat, iterations, infection_rate, incubation_period, infection_time, vaccination_time):
     test_network = facebook_network()
     n = len(test_network.nodes)
     vaccination_rate = int(n/vaccination_time)
 
-    test_model = Model(test_network, infection_rate, incubation_period, infection_time, vaccination_rate, "age")
+    test_model = Model(test_network, infection_rate, incubation_period, infection_time, vaccination_rate, vaccination_method=vax_strat)
     lines = 0
-    if exists(f"stats/fb_age_{infection_rate}_{incubation_period}_{infection_time}_{vaccination_rate}.txt"):
-        temp = open(f"stats/fb_age_{infection_rate}_{incubation_period}_{infection_time}_{vaccination_rate}.txt")
+    if exists(f"stats/fb_{vax_strat}_{infection_rate}_{incubation_period}_{infection_time}_{vaccination_rate}.txt"):
+        temp = open(f"stats/fb_{vax_strat}_{infection_rate}_{incubation_period}_{infection_time}_{vaccination_rate}.txt")
         lines = sum(1 for line in temp)
         temp.close()
-    age_stats = open(f"stats/fb_age_{infection_rate}_{incubation_period}_{infection_time}_{vaccination_rate}.txt", "a")
+    stats = open(f"stats/fb_{vax_strat}_{infection_rate}_{incubation_period}_{infection_time}_{vaccination_rate}.txt", "a")
 
     for i in range(lines, lines + iterations):
-        print("age:", i)
+        print("At iteration nr.", i)
         test_model.reset(i)
         test_model.infect(5)
         while not test_model.is_finished():
             test_model.step()
-        age_stats.write(f"{i};{test_model.get_time()};{n - len(test_model.get_susceptibles())};{len(test_model.get_deads())}\n")
-    age_stats.close()
+        stats.write(f"{i};{test_model.get_time()};{n - len(test_model.get_susceptibles())};{len(test_model.get_deads())}\n")
+    stats.close()
 
+    """
     test_model = Model(test_network, infection_rate, incubation_period, infection_time, vaccination_rate, "degree")
     lines = 0
     if exists(f"stats/fb_degree_{infection_rate}_{incubation_period}_{infection_time}_{vaccination_rate}.txt"):
@@ -40,6 +41,7 @@ def test(iterations, infection_rate, incubation_period, infection_time, vaccinat
             test_model.step()
         degree_stats.write(f"{i};{test_model.get_time()};{n - len(test_model.get_susceptibles())};{len(test_model.get_deads())}\n")
     degree_stats.close()
+    """
 
 def print_stats(age_file, degree_file):
     age_stats = open(age_file)
@@ -75,8 +77,8 @@ def print_stats(age_file, degree_file):
 
 
 def main():
-    # test(50, 0.5, 0.2, 7, 100)
-    print_stats("stats/fb_age_0.5_0.2_7_40.txt", "stats/fb_degree_0.5_0.2_7_40.txt")
+    facebook_test("none", 5, 0.5, 0.2, 7, 100)
+    #print_stats("stats/fb_age_0.5_0.2_7_40.txt", "stats/fb_degree_0.5_0.2_7_40.txt")
 
 if __name__ == "__main__":
     main()
