@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import networkx as nx
+from pyparsing import countedArray
 #from matplotlib.animation import
 
 def draw_graph_simple(susceptible, infected, dead, recovered, time):
@@ -83,3 +84,20 @@ def boxplot(age_file, degree_file, random_file, none_file):
     plt.xticks([1, 2, 3], ['Random', 'Age', 'Degree'])
 
     plt.show()
+
+def print_mean(file_name):
+    file = open(file_name)
+    linecount = 0
+    average_deaths = 0
+    average_infected = 0
+    for line in file:
+        linecount += 1
+        line_split = line.split(";")
+        average_infected += int(line_split[2])
+        average_deaths += int(line_split[3])
+    average_deaths /= linecount
+    average_infected /= linecount
+
+    print(f"{file_name}:")
+    print(f"    infected: {average_infected}")
+    print(f"    deaths:   {average_deaths}")
