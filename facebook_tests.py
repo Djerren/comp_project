@@ -120,19 +120,21 @@ def print_stats(age_file, degree_file):
 
 
 def main():
-    facebook_test("random", 10, 0.5, 0.2, 7, 100)
-    #print_stats("stats/fb_age_0.5_0.2_7_40.txt", "stats/fb_degree_0.5_0.2_7_40.txt")
-    """
-    ba_test("none", 1, 1000, 7, 0.5, 0.2, 7, 100)
-    ba_test("age", 1, 1000, 7, 0.5, 0.2, 7, 100)
-    ba_test("random", 1, 1000, 7, 0.5, 0.2, 7, 100)
+    facebook_test("random", 10, 0.5, 0.1, 7, 100)
+    facebook_test("random", 10, 0.5, 0.5, 7, 100)
+    facebook_test("random", 10, 0.5, 0.7, 7, 100)
 
-    ws_test("none", 1, 1000, 6, 0.05, 0.5, 0.2, 7, 100)
-    ws_test("random", 1, 1000, 6, 0.05, 0.5, 0.2, 7, 100)
-    ws_test("age", 1, 1000, 6, 0.05, 0.5, 0.2, 7, 100)
-    ws_test("degree", 1, 1000, 6, 0.05, 0.5, 0.2, 7, 100)
-    """
+    facebook_test("none", 10, 0.5, 0.1, 7, 100)
+    facebook_test("none", 10, 0.5, 0.5, 7, 100)
+    facebook_test("none", 10, 0.5, 0.7, 7, 100)
 
+    facebook_test("age", 10, 0.5, 0.1, 7, 100)
+    facebook_test("age", 10, 0.5, 0.5, 7, 100)
+    facebook_test("age", 10, 0.5, 0.7, 7, 100)
+
+    facebook_test("degree", 10, 0.5, 0.1, 7, 100)
+    facebook_test("degree", 10, 0.5, 0.5, 7, 100)
+    facebook_test("degree", 10, 0.5, 0.7, 7, 100)
 
 if __name__ == "__main__":
     main()

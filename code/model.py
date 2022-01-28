@@ -4,9 +4,46 @@ import numpy as np
 from code.helper_functions import find_other_node, get_ages
 
 class Model:
+    """
+    The Model class runs a disease spread simulation based on data from covid-19. This model
+    is based on the model described in https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0240878
+    with added functionality for vaccinations and vulnerabilty. Vulnerability of a node is based on age, and affects
+    the probability of dying. This probability is based on data of RIVM (source). vaccinations affect the probability
+    of dying, the probability of getting exposed and the probability of spreading. The effects of vaccinations and
+    the standard values are based on data of RIVM (source).
+    """
+
     def __init__(self, network, infection_rate, incubation_period, infection_time,
                  vaccination_rate, vaccination_method="random", vaccine_spread_effectiveness=0.05,
                  vaccine_mortality_effectiveness=0.1, random_seed=0):
+        """
+        This function initializes the model with the following parameters:
+         - network: The network on which the simulation will be run. nodes are people and edges are connections
+           through which the disease can spread.
+         - infection_rate: this parameter is the probability that a node is exposed to the disease if it has come
+           into contact with an infected node. (so if every neighbour of a node is infected this parameter is
+           exactly the probability that the node is exposed.)
+         - incubation_period: this parameter is the probability for a node to go from the exposed state to infected on
+           a given day. Can also be interpreted as the expected fraction of the total number number of exposed nodes
+           that will become infected. 1/incubation_period gives the expected number of days before a node goes from
+           exposed to infected.
+         - infection_time: this parameter is the expected number of days before an infected node either dies or
+           recovers. 1/infection_time is the probability that an infected node dies or recovers on a given day and
+           can also be interpreted as the expected fraction of infected nodes that will either die or recover on
+           a certain day.
+         - vaccination_rate: the number of people that are vaccinated each day.
+         - vaccination_method: this decides which people will be prioritized for vaccinations:
+             - none: no vaccinations
+             - random: vaccinations are decided randomly
+             - age: old people (vulnerable people) are prioritized
+             - degree: nodes with high degree are prioritized
+         - vaccine_spread_effectiveness: This parameter represents the effect of vaccinations on the spread of the
+           disease. If a node is vaccinated, the probability of getting exposed is multiplied by this parameter and
+           the probability of getting exposed via a vaccinated person is also multiplied by this parameter.
+         - vaccine_mortality_effectiveness: the probability of dying is multiplied by this parameter if the node is
+           vaccinated.
+         - random_seed: this parameter decides the randomness, so results can be repeated and checked.
+        """
         self.network = network
         self.infection_rate = infection_rate
         self.incubation_period = incubation_period
@@ -16,6 +53,7 @@ class Model:
         self.vaccine_spread_effectiveness = vaccine_spread_effectiveness
         self.vaccine_mortality_effectiveness = vaccine_mortality_effectiveness
 
+        # We call the reset function to set all the starting values of the nodes.
         self.reset(random_seed)
 
     def reset(self, random_seed=0):

@@ -1,3 +1,6 @@
+# helper_functions.py consists of a few functions that are useful in the rest of the project
+# but don't fit in any other file.
+
 import networkx as nx
 import numpy as np
 from posixpath import split
@@ -34,6 +37,10 @@ def get_ages(number):
     return ages
 
 def facebook_network():
+    """
+    This function creates a social network based on data from facebook connections.
+    https://snap.stanford.edu/data/ego-Facebook.html
+    """
     network = nx.Graph()
     edges = []
     file = open("data/facebook_combined.txt")
