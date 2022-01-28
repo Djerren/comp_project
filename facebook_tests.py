@@ -136,15 +136,12 @@ def main():
     # facebook_test("degree", 10, 0.5, 0.5, 7, 100)
     # facebook_test("degree", 10, 0.5, 0.7, 7, 100)
 
-    facebook_test("none", 10, 0.2, 0.2, 7, 100)
-    facebook_test("random", 10, 0.2, 0.2, 7, 100)
-    facebook_test("age", 10, 0.2, 0.2, 7, 100)
-    facebook_test("degree", 10, 0.2, 0.2, 7, 100)
-
-    facebook_test("none", 10, 0.7, 0.2, 7, 100)
-    facebook_test("random", 10, 0.7, 0.2, 7, 100)
-    facebook_test("age", 10, 0.7, 0.2, 7, 100)
-    facebook_test("degree", 10, 0.7, 0.2, 7, 100)
+    infection_rates = [0.1, 0.3, 0.4, 0.6, 0.9, 1]
+    for rate in infection_rates:
+        facebook_test("none", 10, rate, 0.2, 7, 100)
+        facebook_test("random", 10, rate, 0.2, 7, 100)
+        facebook_test("age", 10, 0.8, rate, 7, 100)
+        facebook_test("degree", 10, 0.8, rate, 7, 100)
 
 if __name__ == "__main__":
     main()
