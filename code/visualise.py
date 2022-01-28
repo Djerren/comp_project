@@ -65,8 +65,12 @@ def boxplot(age_file, degree_file, random_file, none_file):
 
     plt.subplots(2, 1)
     plt.subplot(2, 1, 1)
+    plt.title('Deaths')
     plt.boxplot([none_deaths, random_deaths, age_deaths, degree_deaths])
+    plt.xticks([1, 2, 3, 4], ['None', 'Random', 'Age', 'Degree'])
     plt.subplot(2, 1, 2)
+    plt.title('Infected')
     plt.boxplot([none_infected, random_infected, age_infected, degree_infected])
+    plt.xticks([1, 2, 3, 4], ['None', 'Random', 'Age', 'Degree'])
 
     plt.show()
