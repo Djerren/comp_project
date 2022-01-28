@@ -101,3 +101,51 @@ def print_mean(file_name):
     print(f"{file_name}:")
     print(f"    infected: {average_infected}")
     print(f"    deaths:   {average_deaths}")
+
+def get_average(file, index):
+    sum = 0
+    counter = 0
+    for line in file:
+        counter += 1
+        line_split = line.split(";")
+        sum += int(line_split[index])
+    
+    return sum / counter
+
+
+def graph_infection_rate(data):
+    if data == "time":
+        index = 1
+    elif data == "infections":
+        index = 2
+    else:
+        index = 3
+    
+    infection_rates = [i * 0.1 for i in range(1, 11)]
+
+    random = []
+    for rate in infection_rates:
+        file = open(f"stats/fb_random_{round(rate, 1)}_0.2_7_40.txt")
+        random += [get_average(file, index)]
+        file.close()
+    
+    age = []
+    for rate in infection_rates:
+        file = open(f"stats/fb_age_{round(rate, 1)}_0.2_7_40.txt")
+        age += [get_average(file, index)]
+        file.close()
+
+    degree = []
+    for rate in infection_rates:
+        file = open(f"stats/fb_degree_{round(rate, 1)}_0.2_7_40.txt")
+        degree += [get_average(file, index)]
+        file.close()
+    
+    plt.plot(infection_rates, random, label="random")
+    plt.plot(infection_rates, age, label="age")
+    plt.plot(infection_rates, degree, label="degree")
+    plt.legend()
+    plt.show()
+
+        
+    
