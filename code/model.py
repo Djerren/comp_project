@@ -88,15 +88,17 @@ class Model:
          - age:    vaccination is done in order of age (high to low)
          - degree: vaccination is done in order of node degree (high to low)
         """
+        eligible = self.get_eligible()
         if self.vaccination_method == "none":
+            return        
+        if len(eligible) < self.vaccination_rate:
+            for node in eligible:
+                self.network.nodes[node]["vaccination"] = "V"
             return
 
-        if len(self.get_unvaccinated()) < self.vaccination_rate:
-            nx.set_node_attributes(self.network, "V", "vaccination")
-            return
         # Random vaccination
         if self.vaccination_method == "random":
-            vaccinated = np.copy(self.get_unvaccinated())
+            vaccinated = np.copy(eligible)
             np.random.shuffle(vaccinated)
             for i in vaccinated[0:self.vaccination_rate]:
                 self.network.nodes[i]["vaccination"] = "V"
@@ -107,7 +109,7 @@ class Model:
             for node in sorted_nodes:
                 if counter == self.vaccination_rate:
                     return
-                if self.network.nodes[node[0]]["vaccination"] == "NV":
+                if node[0] in eligible:
                     self.network.nodes[node[0]]["vaccination"] = "V"
                     counter += 1
         # Degree based vaccination
@@ -117,7 +119,7 @@ class Model:
             for node in sorted_nodes:
                 if counter == self.vaccination_rate:
                     return
-                if self.network.nodes[node[0]]["vaccination"] == "NV":
+                if node[0] in eligible:
                     self.network.nodes[node[0]]["vaccination"] = "V"
                     counter += 1
 
@@ -126,7 +128,6 @@ class Model:
         This function simulates one timestep of the model, using the simple method
         of computing probabilities for an entire day.
         """
-
         if self.finished:
             return
 
@@ -275,11 +276,11 @@ class Model:
     def get_deads(self):
         return [node for node in self.network.nodes if self.network.nodes[node]["status"] == "F"]
 
-    def get_unvaccinated(self):
-        return [node for node in self.network.nodes if self.network.nodes[node]["vaccination"] == "NV"]
-
-    def get_vaccinated(self):
-        return [node for node in self.network.nodes if self.network.nodes[node]["vaccination"] == "V"]
+    def get_eligible(self):
+        unvaccinated = [node for node in self.network.nodes if self.network.nodes[node]["vaccination"] == "NV"]
+        eligible = [node for node in unvaccinated if self.network.nodes[node]["status"] == "S"
+                                                  or self.network.nodes[node]["status"] == "E"]
+        return eligible
 
     def get_time(self):
         return self.t

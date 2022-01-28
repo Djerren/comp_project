@@ -120,21 +120,25 @@ def print_stats(age_file, degree_file):
 
 
 def main():
-    facebook_test("random", 10, 0.5, 0.1, 7, 100)
-    facebook_test("random", 10, 0.5, 0.5, 7, 100)
-    facebook_test("random", 10, 0.5, 0.7, 7, 100)
+    # facebook_test("random", 10, 0.5, 0.1, 7, 100)
+    # facebook_test("random", 10, 0.5, 0.5, 7, 100)
+    # facebook_test("random", 10, 0.5, 0.7, 7, 100)
 
-    facebook_test("none", 10, 0.5, 0.1, 7, 100)
-    facebook_test("none", 10, 0.5, 0.5, 7, 100)
-    facebook_test("none", 10, 0.5, 0.7, 7, 100)
+    # facebook_test("none", 10, 0.5, 0.1, 7, 100)
+    # facebook_test("none", 10, 0.5, 0.5, 7, 100)
+    # facebook_test("none", 10, 0.5, 0.7, 7, 100)
 
-    facebook_test("age", 10, 0.5, 0.1, 7, 100)
-    facebook_test("age", 10, 0.5, 0.5, 7, 100)
-    facebook_test("age", 10, 0.5, 0.7, 7, 100)
+    # facebook_test("age", 10, 0.5, 0.1, 7, 100)
+    # facebook_test("age", 10, 0.5, 0.5, 7, 100)
+    # facebook_test("age", 10, 0.5, 0.7, 7, 100)
 
-    facebook_test("degree", 10, 0.5, 0.1, 7, 100)
-    facebook_test("degree", 10, 0.5, 0.5, 7, 100)
-    facebook_test("degree", 10, 0.5, 0.7, 7, 100)
+    # facebook_test("degree", 10, 0.5, 0.1, 7, 100)
+    # facebook_test("degree", 10, 0.5, 0.5, 7, 100)
+    # facebook_test("degree", 10, 0.5, 0.7, 7, 100)
+    facebook_test("none", 1, 0.5, 0.2, 7, 100)
+    facebook_test("random", 1, 0.5, 0.2, 7, 100)
+    facebook_test("age", 1, 0.5, 0.2, 7, 100)
+    facebook_test("degree", 1, 0.5, 0.2, 7, 100)
 
 if __name__ == "__main__":
     main()
