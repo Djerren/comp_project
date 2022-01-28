@@ -79,7 +79,7 @@ def boxplot(age_file, degree_file, random_file, none_file):
     plt.xticks([1], ['None'])
 
     plt.subplot(2,2,4)
-    plt.boxplot([random_deaths, age_deaths, degree_deaths])
+    plt.boxplot([random_infected, age_infected, degree_infected])
     plt.xticks([1, 2, 3], ['Random', 'Age', 'Degree'])
 
     plt.show()
