@@ -219,6 +219,9 @@ class Model:
                                                   or self.network.nodes[node]["status"] == "E"]
         return eligible
 
+    def get_vaccinated(self):
+        return [node for node in self.network.nodes if self.network.nodes[node]["vaccination"] == "V"]
+
     def get_time(self):
         return self.t
 
