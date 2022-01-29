@@ -4,6 +4,10 @@ from code.model import Model
 import networkx as nx
 
 def facebook_test(vax_strat, iterations, infection_rate, incubation_period, infection_time, vaccination_time):
+    """
+    This method does iterations simulations on the facebook network and adds (!) the results to a possibly
+    already existing file consisting of results with the same settings.
+    """
     test_network = facebook_network()
     n = len(test_network.nodes)
     vaccination_rate = int(n/vaccination_time)
@@ -25,25 +29,20 @@ def facebook_test(vax_strat, iterations, infection_rate, incubation_period, infe
         stats.write(f"{i};{test_model.get_time()};{n - len(test_model.get_susceptibles())};{len(test_model.get_deads())}\n")
     stats.close()
 
+def single_facebook_test(vaccination_method, infection_rate, incubation_period, infection_time, vaccination_rate, random_seed):
     """
-    test_model = Model(test_network, infection_rate, incubation_period, infection_time, vaccination_rate, "degree")
-    lines = 0
-    if exists(f"stats/fb_degree_{infection_rate}_{incubation_period}_{infection_time}_{vaccination_rate}.txt"):
-        temp = open(f"stats/fb_degree_{infection_rate}_{incubation_period}_{infection_time}_{vaccination_rate}.txt")
-        lines = sum(1 for line in temp)
-        temp.close()
-    degree_stats = open(f"stats/fb_degree_{infection_rate}_{incubation_period}_{infection_time}_{vaccination_rate}.txt", "a")
-
-    for i in range(lines, lines + iterations):
-        print("degree:", i)
-        test_model.reset(i)
-        test_model.infect(5)
-        while not test_model.is_finished():
-            test_model.step()
-        degree_stats.write(f"{i};{test_model.get_time()};{n - len(test_model.get_susceptibles())};{len(test_model.get_deads())}\n")
-    degree_stats.close()
+    This function does a single simulation on the facebook network, given the parameters. Should mostly be used to check the results.
     """
+    test_network = facebook_network()
+    n = len(test_network.nodes)
+    test_model = Model(test_network, infection_rate, incubation_period, infection_time, vaccination_rate, vaccination_method, random_seed=random_seed)
+    test_model.infect(5)
+    while not test_model.is_finished():
+        test_model.step()
+    print(f"{random_seed};{test_model.get_time()};{n - len(test_model.get_susceptibles())};{len(test_model.get_deads())}")
 
+
+# The next three functions have (currently) not been used for testing, so we skipped commenting them.
 def ba_test(vax_strat, iterations, nr_nodes, nr_linking_edges, infection_rate, incubation_period, infection_time, vaccination_time):
     vaccination_rate = int(nr_nodes/vaccination_time)
 
@@ -120,6 +119,7 @@ def print_stats(age_file, degree_file):
 
 
 def main():
+    single_facebook_test("age", 1.0, 0.21, 7, 40, 2)
     # facebook_test("random", 10, 0.5, 0.1, 7, 100)
     # facebook_test("random", 10, 0.5, 0.5, 7, 100)
     # facebook_test("random", 10, 0.5, 0.7, 7, 100)
@@ -135,7 +135,7 @@ def main():
     # facebook_test("degree", 10, 0.5, 0.1, 7, 100)
     # facebook_test("degree", 10, 0.5, 0.5, 7, 100)
     # facebook_test("degree", 10, 0.5, 0.7, 7, 100)
-    facebook_test("age", 10, 1, 0.21, 7, 100)
+
 
 if __name__ == "__main__":
     main()
