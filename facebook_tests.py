@@ -85,39 +85,6 @@ def ws_test(vax_strat, iterations, nr_nodes, avg_degree, rewiring_prob, infectio
         stats.write(f"{i};{test_model.get_time()};{nr_nodes - len(test_model.get_susceptibles())};{len(test_model.get_deads())}\n")
     stats.close()
 
-def print_stats(age_file, degree_file):
-    age_stats = open(age_file)
-    lines, age_time, age_infected, age_dead = [0] * 4
-    for line in age_stats:
-        lines += 1
-        line_split = line.split(";")
-        age_time += int(line_split[1])
-        age_infected += int(line_split[2])
-        age_dead += int(line_split[3])
-    age_stats.close()
-    age_time /= lines
-    age_infected /= lines
-    age_dead /= lines
-
-    degree_stats = open(degree_file)
-    lines, degree_time, degree_infected, degree_dead = [0] * 4
-    for line in degree_stats:
-        lines += 1
-        line_split = line.split(";")
-        degree_time += int(line_split[1])
-        degree_infected += int(line_split[2])
-        degree_dead += int(line_split[3])
-    degree_stats.close()
-    degree_time /= lines
-    degree_infected /= lines
-    degree_dead /= lines
-
-    print(f"age: {age_time} steps")
-    print(f"infected: {round(age_infected, 2)}, dead: {round(age_dead, 2)}")
-    print(f"degree: {degree_time} steps")
-    print(f"infected: {round(degree_infected, 2)}, dead: {round(degree_dead, 2)}")
-
-
 def main():
     single_facebook_test("age", 1.0, 0.21, 7, 40, 2)
     # facebook_test("random", 10, 0.5, 0.1, 7, 100)
