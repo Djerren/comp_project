@@ -10,11 +10,11 @@ def facebook_test(vax_strat, iterations, infection_rate, incubation_period, infe
 
     test_model = Model(test_network, infection_rate, incubation_period, infection_time, vaccination_rate, vaccination_method=vax_strat)
     lines = 0
-    if exists(f"stats/fb_{vax_strat}_{round(infection_rate, 1)}_{incubation_period}_{infection_time}_{vaccination_rate}.txt"):
-        temp = open(f"stats/fb_{vax_strat}_{round(infection_rate, 1)}_{incubation_period}_{infection_time}_{vaccination_rate}.txt")
+    if exists(f"stats/fb_{vax_strat}_{format(infection_rate, '.1f')}_{format(incubation_period, '.2f')}_{infection_time}_{vaccination_rate}.txt"):
+        temp = open(f"stats/fb_{vax_strat}_{format(infection_rate, '.1f')}_{format(incubation_period, '.2f')}_{infection_time}_{vaccination_rate}.txt")
         lines = sum(1 for line in temp)
         temp.close()
-    stats = open(f"stats/fb_{vax_strat}_{round(infection_rate, 1)}_{incubation_period}_{infection_time}_{vaccination_rate}.txt", "a")
+    stats = open(f"stats/fb_{vax_strat}_{format(infection_rate, '.1f')}_{format(incubation_period, '.2f')}_{infection_time}_{vaccination_rate}.txt", "a")
 
     for i in range(lines, lines + iterations):
         print("At iteration nr.", i)
@@ -135,11 +135,12 @@ def main():
     # facebook_test("degree", 10, 0.5, 0.1, 7, 100)
     # facebook_test("degree", 10, 0.5, 0.5, 7, 100)
     # facebook_test("degree", 10, 0.5, 0.7, 7, 100)
-
-    infection_rates = [0.1, 0.3, 0.4, 0.6, 0.9, 1]
-    for rate in infection_rates:
-        facebook_test("age", 10, rate, 0.2, 7, 100)
-        facebook_test("degree", 10, rate, 0.2, 7, 100)
+    incubation_periods = [1/i for i in range(7, 11)]
+    for period in incubation_periods:
+        facebook_test("none", 10, 1, period, 7, 100)
+        facebook_test("random", 10, 1, period, 7, 100)
+        facebook_test("age", 10, 1, period, 7, 100)
+        facebook_test("degree", 10, 1, period, 7, 100)
 
 if __name__ == "__main__":
     main()

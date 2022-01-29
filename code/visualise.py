@@ -125,19 +125,19 @@ def graph_infection_rate(data):
 
     random = []
     for rate in infection_rates:
-        file = open(f"stats/fb_random_{round(rate, 1)}_0.2_7_40.txt")
+        file = open(f"stats/fb_random_{format(rate, '.1f')}_0.20_7_40.txt")
         random += [get_average(file, index)]
         file.close()
     
     age = []
     for rate in infection_rates:
-        file = open(f"stats/fb_age_{round(rate, 1)}_0.2_7_40.txt")
+        file = open(f"stats/fb_age_{format(rate, '.1f')}_0.20_7_40.txt")
         age += [get_average(file, index)]
         file.close()
 
     degree = []
     for rate in infection_rates:
-        file = open(f"stats/fb_degree_{round(rate, 1)}_0.2_7_40.txt")
+        file = open(f"stats/fb_degree_{format(rate, '.1f')}_0.20_7_40.txt")
         degree += [get_average(file, index)]
         file.close()
     
