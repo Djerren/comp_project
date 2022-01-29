@@ -112,7 +112,6 @@ def get_average(file, index):
     
     return sum / counter
 
-
 def graph_infection_rate(data):
     if data == "time":
         index = 1
@@ -145,7 +144,5 @@ def graph_infection_rate(data):
     plt.plot(infection_rates, age, label="age")
     plt.plot(infection_rates, degree, label="degree")
     plt.legend()
-    plt.show()
-
-        
+    plt.show()     
     

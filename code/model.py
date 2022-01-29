@@ -149,11 +149,8 @@ class Model:
                 for edge in self.network.edges(node):
                     neighbour = find_other_node(edge, node)
                     if self.network.nodes[neighbour]["status"] == "I":
-                        if self.network.nodes[node]["vaccination"] == "NV":
-                            infected_neighbours += 1
-                        else:
-                            infected_neighbours += self.vaccine_spread_effectiveness
-
+                        infected_neighbours += 1
+                        
                 exposed_prob = 0
                 if len(self.network.edges(node)):
                     if self.network.nodes[node]["vaccination"] == "NV":

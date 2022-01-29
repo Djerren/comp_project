@@ -135,12 +135,7 @@ def main():
     # facebook_test("degree", 10, 0.5, 0.1, 7, 100)
     # facebook_test("degree", 10, 0.5, 0.5, 7, 100)
     # facebook_test("degree", 10, 0.5, 0.7, 7, 100)
-    incubation_periods = [1/i for i in range(7, 11)]
-    for period in incubation_periods:
-        facebook_test("none", 10, 1, period, 7, 100)
-        facebook_test("random", 10, 1, period, 7, 100)
-        facebook_test("age", 10, 1, period, 7, 100)
-        facebook_test("degree", 10, 1, period, 7, 100)
+    facebook_test("age", 10, 1, 0.21, 7, 100)
 
 if __name__ == "__main__":
     main()
