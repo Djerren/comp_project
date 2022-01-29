@@ -14,8 +14,8 @@ class Model:
     """
 
     def __init__(self, network, infection_rate, incubation_period, infection_time,
-                 vaccination_rate, vaccination_method="random", vaccine_spread_effectiveness=0.05,
-                 vaccine_mortality_effectiveness=0.1, random_seed=0):
+                 vaccination_rate, vaccination_method, vaccine_spread_effectiveness,
+                 vaccine_mortality_effectiveness, random_seed=0):
         """
         This function initializes the model with the following parameters:
          - network: The network on which the simulation will be run. nodes are people and edges are connections
@@ -46,7 +46,7 @@ class Model:
         """
         self.network = network
         self.infection_rate = infection_rate
-        self.incubation_period = incubation_period
+        self.incubation_period = 1 / incubation_period
         self.infection_time = infection_time
         self.vaccination_rate = vaccination_rate
         self.vaccination_method = vaccination_method

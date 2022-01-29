@@ -3,22 +3,22 @@ from code.helper_functions import facebook_network
 from code.model import Model
 import networkx as nx
 
-def facebook_test(vax_strat, iterations, infection_rate, incubation_period, infection_time, vaccination_time):
+def facebook_test(vax_strat, iterations, infection_rate, incubation_period, infection_time, vaccination_rate, vaccine_spread_effectiveness,
+                 vaccine_mortality_effectiveness):
     """
     This method does iterations simulations on the facebook network and adds (!) the results to a possibly
     already existing file consisting of results with the same settings.
     """
     test_network = facebook_network()
     n = len(test_network.nodes)
-    vaccination_rate = int(n/vaccination_time)
 
-    test_model = Model(test_network, infection_rate, incubation_period, infection_time, vaccination_rate, vaccination_method=vax_strat)
+    test_model = Model(test_network, infection_rate, incubation_period, infection_time, vaccination_rate, vax_strat, vaccine_spread_effectiveness, vaccine_mortality_effectiveness)
     lines = 0
-    if exists(f"stats/fb_{vax_strat}_{format(infection_rate, '.1f')}_{format(incubation_period, '.2f')}_{infection_time}_{vaccination_rate}.txt"):
-        temp = open(f"stats/fb_{vax_strat}_{format(infection_rate, '.1f')}_{format(incubation_period, '.2f')}_{infection_time}_{vaccination_rate}.txt")
+    if exists(f"stats/fb_{vax_strat}_{format(infection_rate, '.1f')}_{incubation_period}_{infection_time}_{vaccination_rate}_{format(vaccine_spread_effectiveness, '.2f')}_{format(vaccine_mortality_effectiveness, '.2f')}.txt"):
+        temp = open(f"stats/fb_{vax_strat}_{format(infection_rate, '.1f')}_{incubation_period}_{infection_time}_{vaccination_rate}_{format(vaccine_spread_effectiveness, '.2f')}_{format(vaccine_mortality_effectiveness, '.2f')}.txt")
         lines = sum(1 for line in temp)
         temp.close()
-    stats = open(f"stats/fb_{vax_strat}_{format(infection_rate, '.1f')}_{format(incubation_period, '.2f')}_{infection_time}_{vaccination_rate}.txt", "a")
+    stats = open(f"stats/fb_{vax_strat}_{format(infection_rate, '.1f')}_{incubation_period}_{infection_time}_{vaccination_rate}_{format(vaccine_spread_effectiveness, '.2f')}_{format(vaccine_mortality_effectiveness, '.2f')}.txt", "a")
 
     for i in range(lines, lines + iterations):
         print("At iteration nr.", i)
