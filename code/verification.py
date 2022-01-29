@@ -1,11 +1,15 @@
+# This file consists of some functions with which one can test the model on correctness.
+
 import networkx as nx
 import numpy as np
-from model import Model
-from helper_functions import get_ages
+from code.model import Model
 
 def verify_infect(nr_nodes, nr_infects):
+    """
+    This function verifies whether the right amount of nodes is infected after calling the infect function.
+    """
     network = nx.complete_graph(nr_nodes)
-    model = Model(network, 1, 1, 1, get_ages(nr_nodes), 0)
+    model = Model(network, 1, 1, 1, 0)
     print("Is the right amount of nodes infected?")
 
     for number in nr_infects:
@@ -14,13 +18,16 @@ def verify_infect(nr_nodes, nr_infects):
         model.reset()
 
 def verify_infection_rate(infection_rates, start_infections, nr_nodes):
+    """
+    With this function one can verify that the given infection rate is close to the measured infection rate.
+    """
     print("In each test the measured infection rate should approximate the given infection rate. \n(note that it is possible for this number to exceed 1)")
     network = nx.complete_graph(nr_nodes)
     for infection_rate in infection_rates:
         print("\nCurrent infection rate is:", infection_rate)
         print("measured infection rates:")
 
-        model = Model(network, infection_rate, 1, 1, get_ages(nr_nodes), 0)
+        model = Model(network, infection_rate, 1, 1, 0)
 
         for number in start_infections:
             model.infect(number)
@@ -31,7 +38,11 @@ def verify_infection_rate(infection_rates, start_infections, nr_nodes):
             model.reset()
 
 def verify_incubation_period_and_infection_time(network, starting_infected, incubation_period, infection_time):
-    model = Model(network, 1, incubation_period, infection_time, get_ages(len(network.nodes)), 0)
+    """
+    With this function one can verify that the expected incubation period and infection time are close to
+    what given as a parameter.
+    """
+    model = Model(network, 1, incubation_period, infection_time, 0)
     model.infect(starting_infected)
 
     exposed_period = 0
@@ -48,10 +59,13 @@ def verify_incubation_period_and_infection_time(network, starting_infected, incu
     print("Averege infectious period:", infectious_period / (len(model.get_recovereds()) + len(model.get_deads())))
 
 def verify_vaccination_rate(network, starting_infected, vaccination_rates):
+    """
+    This method checks if the right amount of people is vaccinated at each time step.
+    """
     for vaccination_rate in vaccination_rates:
         for vax_mode in ["random", "age", "degree"]:
             print("Currently testing", vax_mode, "vaccination method.")
-            model = Model(network, 1, 1/5, 7, get_ages(len(network.nodes)), vaccination_rate, vaccination_method=vax_mode)
+            model = Model(network, 1, 1/5, 7, vaccination_rate, vaccination_method=vax_mode)
             model.infect(starting_infected)
 
             vaccinations_per_day = []
@@ -62,17 +76,10 @@ def verify_vaccination_rate(network, starting_infected, vaccination_rates):
 
 
             for i in range(len(vaccinations_per_day) - 1):
-                if vaccinations_per_day[i] != vaccination_rate and vaccinations_per_day[i] != 0:
+                if vaccinations_per_day[i] != vaccination_rate and vaccinations_per_day[i + 1] != 0:
                     print("This was wrong")
                     print(vaccinations_per_day)
                     break
-
-if __name__ == "__main__":
-    sf_network = nx.barabasi_albert_graph(1000, 7)
-    verify_infect(1000, [250, 500, 750])
-    verify_infection_rate([0.25, 0.5, 0.75, 1], [250, 500, 750], 1000)
-    verify_incubation_period_and_infection_time(sf_network, 10, 4/7, 7)
-    verify_vaccination_rate(sf_network, 10, [10, 100, 200])
 
 
 
