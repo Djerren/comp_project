@@ -5,15 +5,15 @@ import networkx as nx
 import numpy as np
 from posixpath import split
 
-def find_other_node(edge, node):
-    """
-    This function finds the second node connected to a certain edge.
-    (There might be a better way to do this.)
-    """
-    if edge[0] == node:
-        return edge[1]
-    else:
-        return edge[0]
+# def find_other_node(edge, node):
+#     """
+#     This function finds the second node connected to a certain edge.
+#     (There might be a better way to do this.)
+#     """
+#     if edge[0] == node:
+#         return edge[1]
+#     else:
+#         return edge[0]
 
 def get_vulnerabilities(number):
     """

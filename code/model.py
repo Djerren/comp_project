@@ -1,7 +1,7 @@
 from tkinter import N
 import networkx as nx
 import numpy as np
-from code.helper_functions import find_other_node, get_vulnerabilities
+from code.helper_functions import get_vulnerabilities
 
 class Model:
     """
@@ -146,8 +146,7 @@ class Model:
             # via any other person in the network. We could add this later (or not).
             if self.network.nodes[node]["status"] == "S":
                 infected_neighbours = 0
-                for edge in self.network.edges(node):
-                    neighbour = find_other_node(edge, node)
+                for neighbour in self.network.neighbors(node):
                     if self.network.nodes[neighbour]["status"] == "I":
                         infected_neighbours += 1
 
