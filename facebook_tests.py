@@ -29,7 +29,7 @@ def facebook_test(vax_strat, iterations, infection_rate, incubation_period, infe
         stats.write(f"{i};{test_model.get_time()};{n - len(test_model.get_susceptibles())};{len(test_model.get_deads())}\n")
     stats.close()
 
-def single_facebook_test(vaccination_method, infection_rate, incubation_period, infection_time, vaccination_rate,
+def single_facebook_test(vax_strat, infection_rate, incubation_period, infection_time, vaccination_rate,
                          vaccine_spread_effectiveness, vaccine_mortality_effectiveness, random_seed):
     """
     This function does a single simulation on the facebook network, given the parameters. Should mostly be used to check the results.
