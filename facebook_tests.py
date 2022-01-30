@@ -21,7 +21,7 @@ def facebook_test(vax_strat, iterations, infection_rate=1.0, incubation_period=5
     stats = open(f"stats/fb_{vax_strat}_{format(infection_rate, '.1f')}_{incubation_period}_{infection_time}_{vaccination_rate}_{format(vaccine_spread_effectiveness, '.2f')}_{format(vaccine_mortality_effectiveness, '.2f')}.txt", "a")
 
     for i in range(lines, lines + iterations):
-        print("At iteration nr.", i)
+        print(f"{vax_strat} at iteration nr.", i)
         test_model.reset(i)
         test_model.infect(5)
         while not test_model.is_finished():
@@ -87,24 +87,10 @@ def ws_test(vax_strat, iterations, nr_nodes, avg_degree, rewiring_prob, infectio
     stats.close()
 
 def main():
-    #facebook_test("random", 2, 0.5, 5, 10, 25, 0.05, 0.05)
-    single_facebook_test("random", 1.0, 5, 10, 25, 0.05, 0.05, 0)
-    single_facebook_test("random", 1.0, 5, 10, 25, 0.05, 0.05, 1)
-    # facebook_test("random", 10, 0.5, 0.1, 7, 100)
-    # facebook_test("random", 10, 0.5, 0.5, 7, 100)
-    # facebook_test("random", 10, 0.5, 0.7, 7, 100)
-
-    # facebook_test("none", 10, 0.5, 0.1, 7, 100)
-    # facebook_test("none", 10, 0.5, 0.5, 7, 100)
-    # facebook_test("none", 10, 0.5, 0.7, 7, 100)
-
-    # facebook_test("age", 10, 0.5, 0.1, 7, 100)
-    # facebook_test("age", 10, 0.5, 0.5, 7, 100)
-    # facebook_test("age", 10, 0.5, 0.7, 7, 100)
-
-    # facebook_test("degree", 10, 0.5, 0.1, 7, 100)
-    # facebook_test("degree", 10, 0.5, 0.5, 7, 100)
-    # facebook_test("degree", 10, 0.5, 0.7, 7, 100)
+    facebook_test("none", 10, infection_rate=0.6)
+    facebook_test("random", 10, infection_rate=0.6)
+    facebook_test("age", 10, infection_rate=0.6)
+    facebook_test("degree", 10, infection_rate=0.6)
 
 
 if __name__ == "__main__":
