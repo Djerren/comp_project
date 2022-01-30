@@ -1,16 +1,16 @@
 import networkx as nx
 from code.helper_functions import facebook_network
 from code.model import Model
-from code.visualise import draw_graph_simple, get_average, graph_infection_rate, print_network, boxplot, compare_infection_rates
+from code.visualise import draw_graph_simple, get_average, graph_incubation_period, graph_infection_rate, print_network, boxplot, compare_infection_rates
 from code.verification import verify_incubation_period_and_infection_time, verify_infect, verify_infection_rate, verify_vaccination_rate
 
 if __name__ == "__main__":
-    # main()
     # boxplot("stats/fb_age_0.5_0.2_7_40.txt", "stats/fb_degree_0.5_0.2_7_40.txt",
             # "stats/fb_random_0.5_0.2_7_40.txt", "stats/fb_none_0.5_0.2_7_40.txt")
-    # graph_infection_rate("death")
-    # graph_infection_rate("time")
-    compare_infection_rates("deaths")
+    
+    graph_incubation_period("infections")
+    graph_incubation_period("deaths") 
+    graph_incubation_period("time") 
     """
     file = open(f"stats/fb_age_1.0_0.20_7_40.txt")
     average_old = get_average(file, 3)

@@ -159,4 +159,41 @@ def compare_infection_rates(data):
     plt.subplot(122)
     plt.ylim(0,max(max(age_avg),max(degree_avg))+max(max(age_std),max(degree_std)))
     plt.errorbar(infection_rates, degree_avg, yerr=degree_std, label="degree")
-    plt.show()   
+    plt.show()
+
+def graph_incubation_period(data):
+    if data == "time":
+        index = 1
+    elif data == "infections":
+        index = 2
+    else:
+        index = 3
+    
+    incubation_periods = [4, 5, 6, 7]
+    none_avg, random_avg, age_avg, degree_avg = [[] for i in range(4)]
+    none_std, random_std, age_std, degree_std = [[] for i in range(4)]
+
+    for period in incubation_periods:
+        file = open(f"stats/fb_none_1.0_{period}_10_25_0.05_0.05.txt")
+        avg, std = get_average(file, index)
+        none_avg += [avg]
+        none_std += [std]
+        file = open(f"stats/fb_random_1.0_{period}_10_25_0.05_0.05.txt")
+        avg, std = get_average(file, index)
+        random_avg += [avg]
+        random_std += [std]
+        file = open(f"stats/fb_age_1.0_{period}_10_25_0.05_0.05.txt")
+        avg, std = get_average(file, index)
+        age_avg += [avg]
+        age_std += [std]
+        file = open(f"stats/fb_degree_1.0_{period}_10_25_0.05_0.05.txt")
+        avg, std = get_average(file, index)
+        degree_avg += [avg]
+        degree_std += [std]
+    
+    plt.errorbar(incubation_periods, none_avg, yerr=none_std, label="none")
+    plt.errorbar(incubation_periods, random_avg, yerr=random_std, label="random")
+    plt.errorbar(incubation_periods, age_avg, yerr=age_std, label="age")
+    plt.errorbar(incubation_periods, degree_avg, yerr=degree_std, label="degree")
+    plt.legend()
+    plt.show() 
