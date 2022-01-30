@@ -3,8 +3,8 @@ from code.helper_functions import facebook_network
 from code.model import Model
 import networkx as nx
 
-def facebook_test(vax_strat, iterations, infection_rate, incubation_period, infection_time, vaccination_rate, vaccine_spread_effectiveness,
-                 vaccine_mortality_effectiveness):
+def facebook_test(vax_strat, iterations, infection_rate=1.0, incubation_period=5, infection_time=10, vaccination_rate=25, vaccine_spread_effectiveness=0.05,
+                 vaccine_mortality_effectiveness=0.05):
     """
     This method does iterations simulations on the facebook network and adds (!) the results to a possibly
     already existing file consisting of results with the same settings.
@@ -87,7 +87,7 @@ def ws_test(vax_strat, iterations, nr_nodes, avg_degree, rewiring_prob, infectio
     stats.close()
 
 def main():
-    facebook_test("random", 2, 1.0, 5, 10, 25, 0.05, 0.05)
+    #facebook_test("random", 2, 0.5, 5, 10, 25, 0.05, 0.05)
     single_facebook_test("random", 1.0, 5, 10, 25, 0.05, 0.05, 0)
     single_facebook_test("random", 1.0, 5, 10, 25, 0.05, 0.05, 1)
     # facebook_test("random", 10, 0.5, 0.1, 7, 100)
