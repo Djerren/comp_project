@@ -29,13 +29,14 @@ def facebook_test(vax_strat, iterations, infection_rate, incubation_period, infe
         stats.write(f"{i};{test_model.get_time()};{n - len(test_model.get_susceptibles())};{len(test_model.get_deads())}\n")
     stats.close()
 
-def single_facebook_test(vaccination_method, infection_rate, incubation_period, infection_time, vaccination_rate, random_seed):
+def single_facebook_test(vaccination_method, infection_rate, incubation_period, infection_time, vaccination_rate,
+                         vaccine_spread_effectiveness, vaccine_mortality_effectiveness, random_seed):
     """
     This function does a single simulation on the facebook network, given the parameters. Should mostly be used to check the results.
     """
     test_network = facebook_network()
     n = len(test_network.nodes)
-    test_model = Model(test_network, infection_rate, incubation_period, infection_time, vaccination_rate, vaccination_method, random_seed=random_seed)
+    test_model = Model(test_network, infection_rate, incubation_period, infection_time, vaccination_rate, vax_strat, vaccine_spread_effectiveness, vaccine_mortality_effectiveness, random_seed=random_seed)
     test_model.infect(5)
     while not test_model.is_finished():
         test_model.step()
@@ -86,7 +87,9 @@ def ws_test(vax_strat, iterations, nr_nodes, avg_degree, rewiring_prob, infectio
     stats.close()
 
 def main():
-    single_facebook_test("age", 1.0, 0.21, 7, 40, 2)
+    facebook_test("random", 2, 1.0, 5, 10, 25, 0.05, 0.05)
+    single_facebook_test("random", 1.0, 5, 10, 25, 0.05, 0.05, 0)
+    single_facebook_test("random", 1.0, 5, 10, 25, 0.05, 0.05, 1)
     # facebook_test("random", 10, 0.5, 0.1, 7, 100)
     # facebook_test("random", 10, 0.5, 0.5, 7, 100)
     # facebook_test("random", 10, 0.5, 0.7, 7, 100)
