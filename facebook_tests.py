@@ -87,10 +87,10 @@ def ws_test(vax_strat, iterations, nr_nodes, avg_degree, rewiring_prob, infectio
     stats.close()
 
 def main():
-    facebook_test("none", 10, infection_rate=0.6)
-    facebook_test("random", 10, infection_rate=0.6)
-    facebook_test("age", 10, infection_rate=0.6)
-    facebook_test("degree", 10, infection_rate=0.6)
+    facebook_test("none", 10, incubation_period=7)
+    facebook_test("random", 10, incubation_period=7)
+    facebook_test("age", 10, incubation_period=7)
+    facebook_test("degree", 10, incubation_period=7)
 
 
 if __name__ == "__main__":
