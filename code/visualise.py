@@ -85,23 +85,6 @@ def boxplot(age_file, degree_file, random_file, none_file):
 
     plt.show()
 
-def print_mean(file_name):
-    file = open(file_name)
-    linecount = 0
-    average_deaths = 0
-    average_infected = 0
-    for line in file:
-        linecount += 1
-        line_split = line.split(";")
-        average_infected += int(line_split[2])
-        average_deaths += int(line_split[3])
-    average_deaths /= linecount
-    average_infected /= linecount
-
-    print(f"{file_name}:")
-    print(f"    infected: {average_infected}")
-    print(f"    deaths:   {average_deaths}")
-
 def get_average(file, index):
     sum = 0
     counter = 0
@@ -121,25 +104,19 @@ def graph_infection_rate(data):
         index = 3
     
     infection_rates = [i * 0.1 for i in range(1, 11)]
+    none, random, age, degree = [[] for i in range(4)]
 
-    random = []
     for rate in infection_rates:
-        file = open(f"stats/fb_random_{format(rate, '.1f')}_0.20_7_40.txt")
+        file = open(f"stats/fb_none_{format(rate, '.1f')}_5_10_25_0.05_0.05.txt")
+        none += [get_average(file, index)]
+        file = open(f"stats/fb_random_{format(rate, '.1f')}_5_10_25_0.05_0.05.txt")
         random += [get_average(file, index)]
-        file.close()
-    
-    age = []
-    for rate in infection_rates:
-        file = open(f"stats/fb_age_{format(rate, '.1f')}_0.20_7_40.txt")
+        file = open(f"stats/fb_age_{format(rate, '.1f')}_5_10_25_0.05_0.05.txt")
         age += [get_average(file, index)]
-        file.close()
-
-    degree = []
-    for rate in infection_rates:
-        file = open(f"stats/fb_degree_{format(rate, '.1f')}_0.20_7_40.txt")
+        file = open(f"stats/fb_degree_{format(rate, '.1f')}_5_10_25_0.05_0.05.txt")
         degree += [get_average(file, index)]
-        file.close()
     
+    plt.plot(infection_rates, none, label="none")
     plt.plot(infection_rates, random, label="random")
     plt.plot(infection_rates, age, label="age")
     plt.plot(infection_rates, degree, label="degree")
