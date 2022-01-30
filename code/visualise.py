@@ -129,5 +129,34 @@ def graph_infection_rate(data):
     plt.errorbar(infection_rates, age_avg, yerr=age_std, label="age")
     plt.errorbar(infection_rates, degree_avg, yerr=degree_std, label="degree")
     plt.legend()
-    plt.show()     
+    plt.show()   
     
+def compare_infection_rates(data):
+    if data == "time":
+        index = 1
+    elif data == "infections":
+        index = 2
+    else:
+        index = 3
+    
+    infection_rates = [i * 0.1 for i in range(1, 11)]
+    age_avg, degree_avg = [[],[]]
+    age_std, degree_std = [[],[]]
+
+    for rate in infection_rates:
+        file = open(f"stats/fb_age_{format(rate, '.1f')}_5_10_25_0.05_0.05.txt")
+        avg, std = get_average(file, index)
+        age_avg += [avg]
+        age_std += [std]
+        file = open(f"stats/fb_degree_{format(rate, '.1f')}_5_10_25_0.05_0.05.txt")
+        avg, std = get_average(file, index)
+        degree_avg += [avg]
+        degree_std += [std]
+    
+    plt.subplot(121)
+    plt.ylim(0,max(max(age_avg),max(degree_avg))+max(max(age_std),max(degree_std)))
+    plt.errorbar(infection_rates, age_avg, yerr=age_std, label="age")
+    plt.subplot(122)
+    plt.ylim(0,max(max(age_avg),max(degree_avg))+max(max(age_std),max(degree_std)))
+    plt.errorbar(infection_rates, degree_avg, yerr=degree_std, label="degree")
+    plt.show()   
