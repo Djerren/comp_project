@@ -90,7 +90,7 @@ class Model:
         """
         if self.vaccination_method == "none":
             return
-        
+
         eligible = self.get_eligible()
         if len(eligible) < self.vaccination_rate:
             for node in eligible:
@@ -106,7 +106,7 @@ class Model:
         # Age based vaccination
         elif self.vaccination_method == "age":
             counter = 0
-            sorted_nodes = sorted(self.network.nodes(data=True), key=lambda x: x[1]["age"], reverse=True)
+            sorted_nodes = sorted(self.network.nodes(data=True), key=lambda x: x[1]["vulnerability"], reverse=True)
             for node in sorted_nodes:
                 if counter == self.vaccination_rate:
                     return
