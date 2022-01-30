@@ -15,7 +15,7 @@ def find_other_node(edge, node):
     else:
         return edge[0]
 
-def get_ages(number):
+def get_vulnerabilities(number):
     """
     This function generates the ages of the nodes according to an age distribution.
     """
@@ -34,7 +34,42 @@ def get_ages(number):
     for i in range(number - len(ages)):
         ages.append(np.random.randint(0,100))
     np.random.shuffle(ages)
-    return ages
+
+    vulnerabilities = [0.0] * len(ages)
+    for i in range(len(vulnerabilities)):
+        if ages[i] <= 49:
+            continue
+        elif ages[i] <= 54:
+            vulnerabilities[i] = 0.001
+            continue
+        elif ages[i] <= 59:
+            vulnerabilities[i] = 0.002
+            continue
+        elif ages[i] <= 64:
+            vulnerabilities[i] = 0.005
+            continue
+        elif ages[i] <= 69:
+            vulnerabilities[i] = 0.013
+            continue
+        elif ages[i] <= 74:
+            vulnerabilities[i] = 0.03
+            continue
+        elif ages[i] <= 79:
+            vulnerabilities[i] = 0.067
+            continue
+        elif ages[i] <= 84:
+            vulnerabilities[i] = 0.114
+            continue
+        elif ages[i] <= 89:
+            vulnerabilities[i] = 0.158
+            continue
+        elif ages[i] <= 94:
+            vulnerabilities[i] = 0.188
+            continue
+        else:
+            vulnerabilities[i] = 0.215
+
+    return vulnerabilities
 
 def facebook_network():
     """

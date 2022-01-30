@@ -1,7 +1,7 @@
 from tkinter import N
 import networkx as nx
 import numpy as np
-from code.helper_functions import find_other_node, get_ages
+from code.helper_functions import find_other_node, get_vulnerabilities
 
 class Model:
     """
@@ -65,9 +65,9 @@ class Model:
         nx.set_node_attributes(self.network, "NV", "vaccination")
         nx.set_node_attributes(self.network, 0, "age")
 
-        ages = get_ages(len(self.network.nodes))
+        vulnerabilities = get_vulnerabilities(len(self.network.nodes))
         for i in range(len(self.network.nodes)):
-            self.network.nodes[i]["age"] = ages[i]
+            self.network.nodes[i]["vulnerability"] = vulnerabilities[i]
         self.t = 0
         self.finished = False
 
@@ -88,9 +88,10 @@ class Model:
          - age:    vaccination is done in order of age (high to low)
          - degree: vaccination is done in order of node degree (high to low)
         """
-        eligible = self.get_eligible()
         if self.vaccination_method == "none":
             return
+        
+        eligible = self.get_eligible()
         if len(eligible) < self.vaccination_rate:
             for node in eligible:
                 self.network.nodes[node]["vaccination"] = "V"
@@ -170,12 +171,12 @@ class Model:
             elif self.network.nodes[node]["status"] == "I":
                 # mortality rate is a function based on age that was fitted through a dataset from RIVM.
                 if self.network.nodes[node]["vaccination"] == "NV":
-                    mortality_rate = (self.network.nodes[node]["age"] / 100) ** 5 / 5
+                    mortality_rate = self.network.nodes[node]["vulnerability"]
                     p_temp = [self.infection_time - 1, 1 - mortality_rate, mortality_rate]
                     p = [rate / self.infection_time for rate in p_temp]
                     transition = np.random.choice([0,1,2], p=p)
                 else:
-                    mortality_rate = (self.network.nodes[node]["age"] / 100) ** 5 / 5 * self.vaccine_mortality_effectiveness
+                    mortality_rate = self.network.nodes[node]["vulnerability"] * self.vaccine_mortality_effectiveness
                     p_temp = [self.infection_time - 1, 1 - mortality_rate, mortality_rate]
                     p = [rate / self.infection_time for rate in p_temp]
                     transition = np.random.choice([0,1,2], p=p)
