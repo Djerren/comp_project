@@ -63,7 +63,6 @@ class Model:
         np.random.seed(random_seed)
         nx.set_node_attributes(self.network, "S", "status")
         nx.set_node_attributes(self.network, "NV", "vaccination")
-        nx.set_node_attributes(self.network, 0, "age")
 
         vulnerabilities = get_vulnerabilities(len(self.network.nodes))
         for i in range(len(self.network.nodes)):
