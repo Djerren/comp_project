@@ -1,31 +1,18 @@
 import networkx as nx
-from code.helper_functions import facebook_network
-from code.model import Model
 from code.visualise import draw_graph_simple, get_average, graph_methods, compare_methods, print_network, boxplot
 from code.verification import verify_incubation_period_and_infection_time, verify_infect, verify_infection_rate, verify_vaccination_rate
 
 if __name__ == "__main__":
     # boxplot("stats/fb_age_0.5_0.2_7_40.txt", "stats/fb_degree_0.5_0.2_7_40.txt",
-            # "stats/fb_random_0.5_0.2_7_40.txt", "stats/fb_none_0.5_0.2_7_40.txt")
+    #         "stats/fb_random_0.5_0.2_7_40.txt", "stats/fb_none_0.5_0.2_7_40.txt")
     
-    compare_methods("infections", "vaccine_mortality_effectiveness")
-    compare_methods("deaths", "vaccine_mortality_effectiveness") 
-    compare_methods("time", "vaccine_mortality_effectiveness") 
-    """
-    file = open(f"stats/fb_age_1.0_0.20_7_40.txt")
-    average_old = get_average(file, 3)
-    file.close()
+    compare_methods("infections", "infection_rate")
+    compare_methods("deaths", "infection_rate") 
+    compare_methods("time", "infection_rate") 
 
-    file = open(f"stats/fb_age_1.0_0.21_7_40.txt")
-    average_new = get_average(file, 3)
-    file.close()
-
-    print(average_old)
-    print(average_new)
-    """
-#     sf_network = nx.barabasi_albert_graph(1000, 7)
-#     verify_infect(1000, [250, 500, 750])
-#     verify_infection_rate([0.25, 0.5, 0.75, 1], [250, 500, 750], 1000)
-#     verify_incubation_period_and_infection_time(sf_network, 10, 4/7, 7)
-#     verify_vaccination_rate(sf_network, 10, [10, 100, 200])
+    # sf_network = nx.barabasi_albert_graph(1000, 7)
+    # verify_infect(1000, [250, 500, 750])
+    # verify_infection_rate([0.25, 0.5, 0.75, 1], [250, 500, 750], 1000)
+    # verify_incubation_period_and_infection_time(sf_network, 10, 4/7, 7)
+    # verify_vaccination_rate(sf_network, 10, [10, 100, 200])
 
