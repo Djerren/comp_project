@@ -93,8 +93,8 @@ def get_average(file, index):
         list += [int(line_split[index])]
     
     return np.mean(list), np.std(list)
-
-def graph_infection_rate(data):
+   
+def compare_methods(data, parameter):
     if data == "time":
         index = 1
     elif data == "infections":
@@ -102,66 +102,59 @@ def graph_infection_rate(data):
     else:
         index = 3
     
-    infection_rates = [i * 0.1 for i in range(1, 11)]
-    none_avg, random_avg, age_avg, degree_avg = [[] for i in range(4)]
-    none_std, random_std, age_std, degree_std = [[] for i in range(4)]
-
-    for rate in infection_rates:
-        file = open(f"stats/fb_none_{format(rate, '.1f')}_5_10_25_0.05_0.05.txt")
-        avg, std = get_average(file, index)
-        none_avg += [avg]
-        none_std += [std]
-        file = open(f"stats/fb_random_{format(rate, '.1f')}_5_10_25_0.05_0.05.txt")
-        avg, std = get_average(file, index)
-        random_avg += [avg]
-        random_std += [std]
-        file = open(f"stats/fb_age_{format(rate, '.1f')}_5_10_25_0.05_0.05.txt")
-        avg, std = get_average(file, index)
-        age_avg += [avg]
-        age_std += [std]
-        file = open(f"stats/fb_degree_{format(rate, '.1f')}_5_10_25_0.05_0.05.txt")
-        avg, std = get_average(file, index)
-        degree_avg += [avg]
-        degree_std += [std]
-    
-    plt.errorbar(infection_rates, none_avg, yerr=none_std, label="none")
-    plt.errorbar(infection_rates, random_avg, yerr=random_std, label="random")
-    plt.errorbar(infection_rates, age_avg, yerr=age_std, label="age")
-    plt.errorbar(infection_rates, degree_avg, yerr=degree_std, label="degree")
-    plt.legend()
-    plt.show()   
-    
-def compare_infection_rates(data):
-    if data == "time":
-        index = 1
-    elif data == "infections":
-        index = 2
+    if parameter == "infection_rate":
+        parameters = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+        file_names = []
+        for p in parameters:
+            file_names.append(f"{format(p, '.1f')}_5_10_25_0.05_0.05.txt")
+    elif parameter == "incubation_period":
+        parameters = [4, 5, 6, 7]
+        file_names = []
+        for p in parameters:
+            file_names.append(f"1.0_{p}_10_25_0.05_0.05.txt")
+    elif parameter == "infection_time":
+        parameters = [6, 8, 10, 12, 14]
+        file_names = []
+        for p in parameters:
+            file_names.append(f"1.0_5_{p}_25_0.05_0.05.txt")
+    elif parameter == "vaccination_rate":
+        parameters = [15, 20, 25, 30, 35]
+        file_names = []
+        for p in parameters:
+            file_names.append(f"1.0_5_10_{p}_0.05_0.05.txt")
+    elif parameter == "vaccine_spread_effectiveness":
+        parameters = [0.03, 0.05, 0.07, 0.10]
+        file_names = []
+        for p in parameters:
+            file_names.append(f"1.0_5_10_25_{format(p, '.2f')}_0.05.txt")
     else:
-        index = 3
+        parameters = [0.03, 0.05, 0.07, 0.10]
+        file_names = []
+        for p in parameters:
+            file_names.append(f"1.0_5_10_25_0.05_{format(p, '.2f')}.txt")
     
-    infection_rates = [i * 0.1 for i in range(1, 11)]
     age_avg, degree_avg = [[],[]]
     age_std, degree_std = [[],[]]
 
-    for rate in infection_rates:
-        file = open(f"stats/fb_age_{format(rate, '.1f')}_5_10_25_0.05_0.05.txt")
+    for file_name in file_names:
+        file = open(f"stats/fb_age_" + file_name)
         avg, std = get_average(file, index)
         age_avg += [avg]
         age_std += [std]
-        file = open(f"stats/fb_degree_{format(rate, '.1f')}_5_10_25_0.05_0.05.txt")
+        file = open(f"stats/fb_degree_" + file_name)
         avg, std = get_average(file, index)
         degree_avg += [avg]
         degree_std += [std]
     
     plt.subplot(121)
     plt.ylim(0,max(max(age_avg),max(degree_avg))+max(max(age_std),max(degree_std)))
-    plt.errorbar(infection_rates, age_avg, yerr=age_std, label="age")
+    plt.errorbar(parameters, age_avg, yerr=age_std, label="age")
     plt.subplot(122)
     plt.ylim(0,max(max(age_avg),max(degree_avg))+max(max(age_std),max(degree_std)))
-    plt.errorbar(infection_rates, degree_avg, yerr=degree_std, label="degree")
+    plt.errorbar(parameters, degree_avg, yerr=degree_std, label="degree")
     plt.show()
 
-def graph_incubation_period(data):
+def graph_methods(data, parameter):
     if data == "time":
         index = 1
     elif data == "infections":
@@ -169,31 +162,61 @@ def graph_incubation_period(data):
     else:
         index = 3
     
-    incubation_periods = [4, 5, 6, 7]
+    if parameter == "infection_rate":
+        parameters = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+        file_names = []
+        for p in parameters:
+            file_names.append(f"{format(p, '.1f')}_5_10_25_0.05_0.05.txt")
+    elif parameter == "incubation_period":
+        parameters = [4, 5, 6, 7]
+        file_names = []
+        for p in parameters:
+            file_names.append(f"1.0_{p}_10_25_0.05_0.05.txt")
+    elif parameter == "infection_time":
+        parameters = [6, 8, 10, 12, 14]
+        file_names = []
+        for p in parameters:
+            file_names.append(f"1.0_5_{p}_25_0.05_0.05.txt")
+    elif parameter == "vaccination_rate":
+        parameters = [15, 20, 25, 30, 35]
+        file_names = []
+        for p in parameters:
+            file_names.append(f"1.0_5_10_{p}_0.05_0.05.txt")
+    elif parameter == "vaccine_spread_effectiveness":
+        parameters = [0.03, 0.05, 0.07, 0.10]
+        file_names = []
+        for p in parameters:
+            file_names.append(f"1.0_5_10_25_{format(p, '.2f')}_0.05.txt")
+    else:
+        parameters = [0.03, 0.05, 0.07, 0.10]
+        file_names = []
+        for p in parameters:
+            file_names.append(f"1.0_5_10_25_0.05_{format(p, '.2f')}.txt")
+    
     none_avg, random_avg, age_avg, degree_avg = [[] for i in range(4)]
     none_std, random_std, age_std, degree_std = [[] for i in range(4)]
 
-    for period in incubation_periods:
-        file = open(f"stats/fb_none_1.0_{period}_10_25_0.05_0.05.txt")
+    for file_name in file_names:
+        file = open("stats/fb_none_" + file_name)
         avg, std = get_average(file, index)
         none_avg += [avg]
         none_std += [std]
-        file = open(f"stats/fb_random_1.0_{period}_10_25_0.05_0.05.txt")
+        file = open(f"stats/fb_random_" + file_name)
         avg, std = get_average(file, index)
         random_avg += [avg]
         random_std += [std]
-        file = open(f"stats/fb_age_1.0_{period}_10_25_0.05_0.05.txt")
+        file = open(f"stats/fb_age_" + file_name)
         avg, std = get_average(file, index)
         age_avg += [avg]
         age_std += [std]
-        file = open(f"stats/fb_degree_1.0_{period}_10_25_0.05_0.05.txt")
+        file = open(f"stats/fb_degree_" + file_name)
         avg, std = get_average(file, index)
         degree_avg += [avg]
         degree_std += [std]
     
-    plt.errorbar(incubation_periods, none_avg, yerr=none_std, label="none")
-    plt.errorbar(incubation_periods, random_avg, yerr=random_std, label="random")
-    plt.errorbar(incubation_periods, age_avg, yerr=age_std, label="age")
-    plt.errorbar(incubation_periods, degree_avg, yerr=degree_std, label="degree")
+    plt.errorbar(parameters, none_avg, yerr=none_std, label="none")
+    plt.errorbar(parameters, random_avg, yerr=random_std, label="random")
+    plt.errorbar(parameters, age_avg, yerr=age_std, label="age")
+    plt.errorbar(parameters, degree_avg, yerr=degree_std, label="degree")
     plt.legend()
     plt.show() 
