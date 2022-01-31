@@ -1,4 +1,6 @@
 # This file consists of some functions with which one can test the model on correctness.
+# only checks the basic model, the rest is more difficult to check and we do that just by
+# checking if the results make sense.
 
 import networkx as nx
 import numpy as np
@@ -9,7 +11,7 @@ def verify_infect(nr_nodes, nr_infects):
     This function verifies whether the right amount of nodes is infected after calling the infect function.
     """
     network = nx.complete_graph(nr_nodes)
-    model = Model(network, 1, 1, 1, 0)
+    model = Model(network, 1, 1, 1, 0, "none", 0.05, 0.05)
     print("Is the right amount of nodes infected?")
 
     for number in nr_infects:
@@ -27,7 +29,7 @@ def verify_infection_rate(infection_rates, start_infections, nr_nodes):
         print("\nCurrent infection rate is:", infection_rate)
         print("measured infection rates:")
 
-        model = Model(network, infection_rate, 1, 1, 0)
+        model = Model(network, infection_rate, 1, 1, 0, "none", 0.05, 0.05)
 
         for number in start_infections:
             model.infect(number)
@@ -42,7 +44,7 @@ def verify_incubation_period_and_infection_time(network, starting_infected, incu
     With this function one can verify that the expected incubation period and infection time are close to
     what given as a parameter.
     """
-    model = Model(network, 1, incubation_period, infection_time, 0)
+    model = Model(network, 1.0, incubation_period, infection_time, 0, "none", 0.05, 0.05)
     model.infect(starting_infected)
 
     exposed_period = 0
@@ -52,7 +54,7 @@ def verify_incubation_period_and_infection_time(network, starting_infected, incu
         exposed_period += len(model.get_exposeds())
         infectious_period += len(model.get_infecteds())
 
-    print("Expected incubation period, based on given variable:", 1/incubation_period)
+    print("Given incubation period:", incubation_period)
     print("Average incubation period:", exposed_period / (len(model.get_recovereds()) + len(model.get_deads())))
 
     print("\n Given infection time:", infection_time)
@@ -64,8 +66,8 @@ def verify_vaccination_rate(network, starting_infected, vaccination_rates):
     """
     for vaccination_rate in vaccination_rates:
         for vax_mode in ["random", "age", "degree"]:
-            print("Currently testing", vax_mode, "vaccination method.")
-            model = Model(network, 1, 1/5, 7, vaccination_rate, vaccination_method=vax_mode)
+            print("Currently testing", vax_mode, "vaccination method. (if nothing else is printed all went well).")
+            model = Model(network, 1, 5, 7, vaccination_rate, vax_mode, 0.05, 0.05)
             model.infect(starting_infected)
 
             vaccinations_per_day = []

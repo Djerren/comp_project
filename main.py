@@ -14,6 +14,6 @@ if __name__ == "__main__":
     # sf_network = nx.barabasi_albert_graph(1000, 7)
     # verify_infect(1000, [250, 500, 750])
     # verify_infection_rate([0.25, 0.5, 0.75, 1], [250, 500, 750], 1000)
-    # verify_incubation_period_and_infection_time(sf_network, 10, 4/7, 7)
+    # verify_incubation_period_and_infection_time(sf_network, 10, 5, 7)
     # verify_vaccination_rate(sf_network, 10, [10, 100, 200])
 
