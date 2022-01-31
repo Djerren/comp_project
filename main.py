@@ -7,10 +7,10 @@ from code.verification import verify_incubation_period_and_infection_time, verif
 if __name__ == "__main__":
     # boxplot("stats/fb_age_0.5_0.2_7_40.txt", "stats/fb_degree_0.5_0.2_7_40.txt",
             # "stats/fb_random_0.5_0.2_7_40.txt", "stats/fb_none_0.5_0.2_7_40.txt")
-    
+
     compare_methods("infections", "vaccine_mortality_effectiveness")
-    compare_methods("deaths", "vaccine_mortality_effectiveness") 
-    compare_methods("time", "vaccine_mortality_effectiveness") 
+    compare_methods("deaths", "vaccine_mortality_effectiveness")
+    compare_methods("time", "vaccine_mortality_effectiveness")
     """
     file = open(f"stats/fb_age_1.0_0.20_7_40.txt")
     average_old = get_average(file, 3)
