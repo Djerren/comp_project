@@ -87,9 +87,7 @@ def ws_test(vax_strat, iterations, nr_nodes, avg_degree, rewiring_prob, infectio
     stats.close()
 
 def main():
-    facebook_test("random", 10, vaccination_rate=35)
-    facebook_test("age", 10, vaccination_rate=35)
-    facebook_test("degree", 10, vaccination_rate=35)
+    facebook_test("degree", 10, vaccine_spread_effectiveness=0.03)
 
 if __name__ == "__main__":
     main()
