@@ -176,10 +176,16 @@ def graph_methods(data, parameter):
     """
     # Generate index of data
     if data == "time":
+        title = "Time taken for virus to die out for different values of " + parameter + "."
+        ylabel = "time (days)"
         index = 1
     elif data == "infections":
+        title = "Total infections for different values of " + parameter + "."
+        ylabel = "number of infections"
         index = 2
     else:
+        title = "Death toll for different values of " + parameter + "."
+        ylabel = "death toll"
         index = 3
 
     # Generate file name and list of values for correct parameter
@@ -244,5 +250,8 @@ def graph_methods(data, parameter):
     plt.errorbar(parameters, random_avg, yerr=random_std, label="random", marker="o", markersize=3, linestyle="none", elinewidth=1)
     plt.errorbar(parameters2, age_avg, yerr=age_std, label="age", marker="o", markersize=3, linestyle="none", elinewidth=1)
     plt.errorbar(parameters3, degree_avg, yerr=degree_std, label="degree", markersize=3, marker="o", linestyle="none", elinewidth=1)
+    plt.title(title)
+    plt.ylabel(ylabel)
+    plt.xlabel(parameter)
     plt.legend()
     plt.show()
