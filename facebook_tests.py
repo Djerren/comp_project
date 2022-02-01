@@ -86,8 +86,15 @@ def ws_test(vax_strat, iterations, nr_nodes, avg_degree, rewiring_prob, infectio
         stats.write(f"{i};{test_model.get_time()};{nr_nodes - len(test_model.get_susceptibles())};{len(test_model.get_deads())}\n")
     stats.close()
 
+def tests_for_figures():
+    for infection_rate in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
+        facebook_test("none", 10, infection_rate=infection_rate)
+        facebook_test("random", 10, infection_rate=infection_rate)
+        facebook_test("degree", 10, infection_rate=infection_rate)
+        facebook_test("age", 10, infection_rate=infection_rate)
+
 def main():
-    facebook_test("degree", 10)
+    tests_for_figures()
 
 if __name__ == "__main__":
     main()
