@@ -5,19 +5,9 @@ import networkx as nx
 import numpy as np
 from posixpath import split
 
-# def find_other_node(edge, node):
-#     """
-#     This function finds the second node connected to a certain edge.
-#     (There might be a better way to do this.)
-#     """
-#     if edge[0] == node:
-#         return edge[1]
-#     else:
-#         return edge[0]
-
 def get_vulnerabilities(number):
     """
-    This function generates the ages of the nodes according to an age distribution.
+    This function generates the vulnerabilities of the nodes according to an age distribution.
     """
     # Extracts the distribution from the file
     age_dist = []
@@ -35,6 +25,7 @@ def get_vulnerabilities(number):
         ages.append(np.random.randint(0,100))
     np.random.shuffle(ages)
 
+    # Sets vulnerability of nodes according to RIVM data
     vulnerabilities = [0.0] * len(ages)
     for i in range(len(vulnerabilities)):
         if ages[i] <= 49:

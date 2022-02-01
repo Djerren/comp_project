@@ -88,6 +88,9 @@ def boxplot(age_file, degree_file, random_file, none_file):
     plt.show()
 
 def get_average(file, index):
+    """
+    This function gives the average value and standard deviation for the data in a file.
+    """
     list = []
     for line in file:
         line_split = line.split(";")
@@ -96,6 +99,13 @@ def get_average(file, index):
     return np.mean(list), np.std(list)
    
 def compare_methods(data, parameter):
+    """
+    This function plots the average data of age based vaccination and degree based 
+    vaccination next to each other. The parameters decide what is plotted:
+     - data:      this parameter decides which data to plot (time, infections or deaths).
+     - parameter: this parameter decides which parameter of the model is on the y-axis.
+    """
+    # Generate index of data
     if data == "time":
         index = 1
     elif data == "infections":
@@ -103,6 +113,7 @@ def compare_methods(data, parameter):
     else:
         index = 3
     
+    # Generate file name and list of values for correct parameter
     if parameter == "infection_rate":
         parameters = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
         file_names = []
@@ -134,9 +145,9 @@ def compare_methods(data, parameter):
         for p in parameters:
             file_names.append(f"1.0_5_10_25_0.05_{format(p, '.2f')}.txt")
     
+    # Find averages and standard deviations of data
     age_avg, degree_avg = [[],[]]
     age_std, degree_std = [[],[]]
-
     for file_name in file_names:
         file = open(f"stats/fb_age_" + file_name)
         avg, std = get_average(file, index)
@@ -147,6 +158,7 @@ def compare_methods(data, parameter):
         degree_avg += [avg]
         degree_std += [std]
     
+    # Plot graphs
     plt.subplot(121)
     plt.ylim(0,max(max(age_avg),max(degree_avg))+max(max(age_std),max(degree_std)))
     plt.errorbar(parameters, age_avg, yerr=age_std, label="age", marker="o", markersize=3, linestyle="none", elinewidth=1)
@@ -156,6 +168,13 @@ def compare_methods(data, parameter):
     plt.show()
 
 def graph_methods(data, parameter):
+    """
+    This function plots the data for all vaccination methods in one graph.
+    The parameters decide what is plotted:
+     - data:      this parameter decides which data to plot (time, infections or deaths).
+     - parameter: this parameter decides which parameter of the model is on the y-axis.
+    """
+    # Generate index of data
     if data == "time":
         index = 1
     elif data == "infections":
@@ -163,6 +182,7 @@ def graph_methods(data, parameter):
     else:
         index = 3
     
+    # Generate file name and list of values for correct parameter
     if parameter == "infection_rate":
         parameters = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
         file_names = []
@@ -194,9 +214,9 @@ def graph_methods(data, parameter):
         for p in parameters:
             file_names.append(f"1.0_5_10_25_0.05_{format(p, '.2f')}.txt")
     
+    # Find averages and standard deviations of data
     none_avg, random_avg, age_avg, degree_avg = [[] for i in range(4)]
     none_std, random_std, age_std, degree_std = [[] for i in range(4)]
-
     for file_name in file_names:
         file = open("stats/fb_none_" + file_name)
         avg, std = get_average(file, index)
@@ -215,6 +235,7 @@ def graph_methods(data, parameter):
         degree_avg += [avg]
         degree_std += [std]
     
+    # Plot graphs
     diff = 0.05 * (parameters[1] - parameters[0])
     parameters1 = [p - diff for p in parameters]
     parameters2 = [p + diff for p in parameters]

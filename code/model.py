@@ -8,9 +8,9 @@ class Model:
     The Model class runs a disease spread simulation based on data from covid-19. This model
     is based on the model described in https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0240878
     with added functionality for vaccinations and vulnerabilty. Vulnerability of a node is based on age, and affects
-    the probability of dying. This probability is based on data of RIVM (source). vaccinations affect the probability
-    of dying, the probability of getting exposed and the probability of spreading. The effects of vaccinations and
-    the standard values are based on data of RIVM (source).
+    the probability of dying. This probability is based on data of RIVM (source). Vaccinations affect the probability
+    of dying and the probability of getting exposed. The effects of vaccinations and the standard values are based on 
+    data of RIVM (source).
     """
 
     def __init__(self, network, infection_rate, incubation_period, infection_time,
@@ -58,7 +58,7 @@ class Model:
 
     def reset(self, random_seed=0):
         """
-        This function sets the status of every node in the network back to susceptible
+        This function sets the status of every node in the network back to the starting state
         """
         np.random.seed(random_seed)
         nx.set_node_attributes(self.network, "S", "status")
@@ -72,7 +72,7 @@ class Model:
 
     def infect(self, number):
         """
-        this function infects people in the network. Currently does this randomly
+        This function infects people in the network. Currently does this randomly
         but could happen in different ways.
         """
         infected = np.copy(self.network.nodes)
@@ -82,7 +82,7 @@ class Model:
 
     def vaccinate(self):
         """
-        This function vaccinated the nodes of the network based on the chosen method:
+        This function vaccinates the nodes of the network based on the chosen method:
          - random: vaccination is done randomly
          - age:    vaccination is done in order of age (high to low)
          - degree: vaccination is done in order of node degree (high to low)
