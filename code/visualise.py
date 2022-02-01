@@ -189,6 +189,7 @@ def graph_methods(data, parameter):
         index = 3
 
     # Generate file name and list of values for correct parameter
+    vaccination_rate = False
     if parameter == "infection_rate":
         parameters = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
         file_names = []
@@ -205,6 +206,7 @@ def graph_methods(data, parameter):
         for p in parameters:
             file_names.append(f"1.0_5_{p}_25_0.05_0.05.txt")
     elif parameter == "vaccination_rate":
+        vaccination_rate = True
         parameters = [15, 20, 25, 30, 35]
         file_names = []
         for p in parameters:
@@ -221,13 +223,20 @@ def graph_methods(data, parameter):
             file_names.append(f"1.0_5_10_25_0.05_{format(p, '.2f')}.txt")
 
     # Find averages and standard deviations of data
-    none_avg, random_avg, age_avg, degree_avg = [[] for i in range(4)]
-    none_std, random_std, age_std, degree_std = [[] for i in range(4)]
+    diff = 0.05 * (parameters[1] - parameters[0])
+    if not vaccination_rate:
+        none_avg, none_std = [[],[]]
+        for file_name in file_names:
+            file = open("stats/fb_none_" + file_name)
+            avg, std = get_average(file, index)
+            none_avg += [avg]
+            none_std += [std]
+        parameters1 = [p - diff for p in parameters]
+        plt.errorbar(parameters1, none_avg, yerr=none_std, label="none", marker="o", markersize=3, linestyle="dotted", linewidth=0.5, elinewidth=1)
+
+    random_avg, age_avg, degree_avg = [[] for i in range(3)]
+    random_std, age_std, degree_std = [[] for i in range(3)]
     for file_name in file_names:
-        file = open("stats/fb_none_" + file_name)
-        avg, std = get_average(file, index)
-        none_avg += [avg]
-        none_std += [std]
         file = open(f"stats/fb_random_" + file_name)
         avg, std = get_average(file, index)
         random_avg += [avg]
@@ -243,13 +252,11 @@ def graph_methods(data, parameter):
 
     # Plot graphs
     diff = 0.05 * (parameters[1] - parameters[0])
-    parameters1 = [p - diff for p in parameters]
     parameters2 = [p + diff for p in parameters]
     parameters3 = [p + 2 * diff for p in parameters]
-    plt.errorbar(parameters1, none_avg, yerr=none_std, label="none", marker="o", markersize=3, linestyle="dotted", linewidth=0.5, elinewidth=1)
     plt.errorbar(parameters, random_avg, yerr=random_std, label="random", marker="o", markersize=3, linestyle="dotted", linewidth=0.5, elinewidth=1)
     plt.errorbar(parameters2, age_avg, yerr=age_std, label="age", marker="o", markersize=3, linestyle="dotted", linewidth=0.5, elinewidth=1)
-    plt.errorbar(parameters3, degree_avg, yerr=degree_std, label="degree", markersize=3, marker="o", linestyle="dotted", linewidth=0.5, elinewidth=1)
+    plt.errorbar(parameters3, degree_avg, yerr=degree_std, label="degree", markersize=3, marker="o", linestyle="dotted", linewidth=0.5, elinewidth=1)    
     plt.title(title)
     plt.ylabel(ylabel)
     plt.xlabel(parameter)
