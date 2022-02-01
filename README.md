@@ -14,10 +14,20 @@ We will compare these 3 strategies to each-other and also to a situation where n
 ```
 pip3 install -r requirements.txt
 ```
-#### Run the program:
+#### Reproduce figures:
 ```
 python3 main.py
 ```
+This will reproduce the figures used for the poster from pre-generated data. To recreate the data, see "Repoduce data". Additionally, one can use main.py to create other figures and run some verifications (see comments in main.py for more info). (Note that if data is removed from the stats folder, some figures can not be created anymore.)
+
+#### Reproduce data:
+Before running anything please remove already existing data from the stats folder. If this is not done, new data will only be added to the already existing data files, instead of recreating them. Once this is done, run:
+```
+python3 facebook_tests.py
+```
+Please note that running this takes a large amount of time. After each 10 simulations a new file is created with data. The name of this file contains the values of all the parameters: vaccination_method, infection_rate, incubation_period, infection_time, vaccination_rate, vaccine_spread_effectivenes and vaccine_mortality_effectiveness.
+
+Additionally one could use the single_facebook_test function to recreate a specific data point. For example, to recreate data of simulation 3 of fb_age_0.1_5_10_25_0.05_0.05.txt, run single_facebook_test("age", 0.1, 5, 10, 25, 0.05, 0.05, 3) in facebook_tests.py.
 
 ## Authors and acknowledgment
 - Jaron Has

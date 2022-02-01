@@ -1,4 +1,3 @@
-from tkinter import N
 import networkx as nx
 import numpy as np
 from code.helper_functions import get_vulnerabilities
@@ -8,8 +7,9 @@ class Model:
     The Model class runs a disease spread simulation based on data from covid-19. This model
     is based on the model described in https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0240878
     with added functionality for vaccinations and vulnerabilty. Vulnerability of a node is based on age, and affects
-    the probability of dying. This probability is based on data of RIVM (source). Vaccinations affect the probability
-    of dying and the probability of getting exposed. The effects of vaccinations and the standard values are based on 
+    the probability of dying. This probability is based on data from datagraver:
+    https://www.datagraver.com/case/verloop-covid-19-nederland. Vaccinations affect the probability
+    of dying and the probability of getting exposed. The effects of vaccinations and the standard values are based on
     data of RIVM (source).
     """
 
@@ -58,7 +58,9 @@ class Model:
 
     def reset(self, random_seed=0):
         """
-        This function sets the status of every node in the network back to the starting state
+        This function sets the status of every node in the network back to the starting state and
+        gives each node in the network a vulnerability parameter based on age distribution in the netherlands and
+        death rates per age group.
         """
         np.random.seed(random_seed)
         nx.set_node_attributes(self.network, "S", "status")
@@ -167,7 +169,9 @@ class Model:
 
             # If the current node is infected, every day it has a chance to recover and a chance to die.
             elif self.network.nodes[node]["status"] == "I":
-                # mortality rate is a function based on age that was fitted through a dataset from RIVM.
+                # Mortality rate is given by the vulnerability parameter of a node.
+                # We first find mortality rate and recovery rate and scale them such that the
+                # expected number of days until recovery or death is infection_time.
                 if self.network.nodes[node]["vaccination"] == "NV":
                     mortality_rate = self.network.nodes[node]["vulnerability"]
                     p_temp = [self.infection_time - 1, 1 - mortality_rate, mortality_rate]
