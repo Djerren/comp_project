@@ -187,7 +187,7 @@ def graph_methods(data, parameter):
         index = 3
 
     # Generate file name and list of values for correct parameter
-    vaccination_rate = False
+    none_method = True
     if parameter == "infection_rate":
         parameters = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
         file_names = []
@@ -204,17 +204,19 @@ def graph_methods(data, parameter):
         for p in parameters:
             file_names.append(f"1.0_5_{p}_25_0.05_0.05.txt")
     elif parameter == "vaccination_rate":
-        vaccination_rate = True
+        none_method = False
         parameters = [15, 20, 25, 30, 35]
         file_names = []
         for p in parameters:
             file_names.append(f"1.0_5_10_{p}_0.05_0.05.txt")
     elif parameter == "vaccine_spread_effectiveness":
+        none_method = False
         parameters = [0.03, 0.05, 0.07, 0.10]
         file_names = []
         for p in parameters:
             file_names.append(f"1.0_5_10_25_{format(p, '.2f')}_0.05.txt")
     else:
+        none_method = False
         parameters = [0.03, 0.05, 0.07, 0.10]
         file_names = []
         for p in parameters:
@@ -222,7 +224,7 @@ def graph_methods(data, parameter):
 
     # Find averages and standard deviations of data
     diff = 0.05 * (parameters[1] - parameters[0])
-    if not vaccination_rate:
+    if none_method:
         none_avg, none_std = [[],[]]
         for file_name in file_names:
             file = open("stats/fb_none_" + file_name)

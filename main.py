@@ -52,7 +52,7 @@ def verifications():
 
 if __name__ == "__main__":
     poster_figures()
-    # alternative_figures("vaccination_rate")
+    # alternative_figures("vaccine_spread_effectiveness")
     # compare_figures("incubation_period")
     # verifications()
 
