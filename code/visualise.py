@@ -1,7 +1,5 @@
 import matplotlib.pyplot as plt
-from matplotlib.transforms import Affine2D
 import networkx as nx
-from pyparsing import countedArray
 import numpy as np
 #from matplotlib.animation import
 

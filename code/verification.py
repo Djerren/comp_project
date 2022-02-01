@@ -3,7 +3,6 @@
 # checking if the results make sense.
 
 import networkx as nx
-import numpy as np
 from code.model import Model
 
 def verify_infect(nr_nodes, nr_infects):

@@ -1,4 +1,3 @@
-from tkinter import N
 import networkx as nx
 import numpy as np
 from code.helper_functions import get_vulnerabilities

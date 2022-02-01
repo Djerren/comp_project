@@ -3,7 +3,6 @@
 
 import networkx as nx
 import numpy as np
-from posixpath import split
 
 def get_vulnerabilities(number):
     """
