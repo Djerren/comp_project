@@ -161,10 +161,10 @@ def compare_methods(data, parameter):
     # Plot graphs
     plt.subplot(121)
     plt.ylim(0,max(max(age_avg),max(degree_avg))+max(max(age_std),max(degree_std)))
-    plt.errorbar(parameters, age_avg, yerr=age_std, label="age", marker="o", markersize=3, linestyle="none", elinewidth=1)
+    plt.errorbar(parameters, age_avg, yerr=age_std, label="age", marker="o", markersize=3, linestyle="dotted", linewidth=0.5, elinewidth=1)
     plt.subplot(122)
     plt.ylim(0,max(max(age_avg),max(degree_avg))+max(max(age_std),max(degree_std)))
-    plt.errorbar(parameters, degree_avg, yerr=degree_std, label="degree", marker="o", markersize=3, linestyle="none", elinewidth=1)
+    plt.errorbar(parameters, degree_avg, yerr=degree_std, label="degree", marker="o", markersize=3, linestyle="dotted", linewidth=0.5, elinewidth=1)
     plt.show()
 
 def graph_methods(data, parameter):
@@ -246,10 +246,10 @@ def graph_methods(data, parameter):
     parameters1 = [p - diff for p in parameters]
     parameters2 = [p + diff for p in parameters]
     parameters3 = [p + 2 * diff for p in parameters]
-    plt.errorbar(parameters1, none_avg, yerr=none_std, label="none", marker="o", markersize=3, linestyle="none", elinewidth=1)
-    plt.errorbar(parameters, random_avg, yerr=random_std, label="random", marker="o", markersize=3, linestyle="none", elinewidth=1)
-    plt.errorbar(parameters2, age_avg, yerr=age_std, label="age", marker="o", markersize=3, linestyle="none", elinewidth=1)
-    plt.errorbar(parameters3, degree_avg, yerr=degree_std, label="degree", markersize=3, marker="o", linestyle="none", elinewidth=1)
+    plt.errorbar(parameters1, none_avg, yerr=none_std, label="none", marker="o", markersize=3, linestyle="dotted", linewidth=0.5, elinewidth=1)
+    plt.errorbar(parameters, random_avg, yerr=random_std, label="random", marker="o", markersize=3, linestyle="dotted", linewidth=0.5, elinewidth=1)
+    plt.errorbar(parameters2, age_avg, yerr=age_std, label="age", marker="o", markersize=3, linestyle="dotted", linewidth=0.5, elinewidth=1)
+    plt.errorbar(parameters3, degree_avg, yerr=degree_std, label="degree", markersize=3, marker="o", linestyle="dotted", linewidth=0.5, elinewidth=1)
     plt.title(title)
     plt.ylabel(ylabel)
     plt.xlabel(parameter)
