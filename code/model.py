@@ -9,7 +9,7 @@ class Model:
     is based on the model described in https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0240878
     with added functionality for vaccinations and vulnerabilty. Vulnerability of a node is based on age, and affects
     the probability of dying. This probability is based on data of RIVM (source). Vaccinations affect the probability
-    of dying and the probability of getting exposed. The effects of vaccinations and the standard values are based on 
+    of dying and the probability of getting exposed. The effects of vaccinations and the standard values are based on
     data of RIVM (source).
     """
 
