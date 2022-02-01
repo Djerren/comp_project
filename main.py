@@ -33,10 +33,20 @@ def verifications():
     This code runs a few verification tests on the base model, we verified the more complicated additions
     just by checking if the results made sense.
     """
+    # we use a Barabasi-albert graph for some of these simple tests.
     sf_network = nx.barabasi_albert_graph(1000, 7)
     verify_infect(1000, [250, 500, 750])
+    print()
+    print("---------------------------------------------------")
+    print()
     verify_infection_rate([0.25, 0.5, 0.75, 1], [250, 500, 750], 1000)
+    print()
+    print("---------------------------------------------------")
+    print()
     verify_incubation_period_and_infection_time(sf_network, 10, 5, 7)
+    print()
+    print("---------------------------------------------------")
+    print()
     verify_vaccination_rate(sf_network, 10, [10, 100, 200])
 
 
