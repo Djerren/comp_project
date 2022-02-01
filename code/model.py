@@ -169,7 +169,9 @@ class Model:
 
             # If the current node is infected, every day it has a chance to recover and a chance to die.
             elif self.network.nodes[node]["status"] == "I":
-                # mortality rate is a function based on age that was fitted through a dataset from RIVM.
+                # Mortality rate is given by the vulnerability parameter of a node.
+                # We first find mortality rate and recovery rate and scale them such that the
+                # expected number of days until recovery or death is infection_time.
                 if self.network.nodes[node]["vaccination"] == "NV":
                     mortality_rate = self.network.nodes[node]["vulnerability"]
                     p_temp = [self.infection_time - 1, 1 - mortality_rate, mortality_rate]
