@@ -87,6 +87,11 @@ def ws_test(vax_strat, iterations, nr_nodes, avg_degree, rewiring_prob, infectio
     stats.close()
 
 def tests_for_figures():
+    """
+    This function runs all the tests necessary for creating the figures from the poster.
+    (To recreate the data, please remove already existing data from the stats folder, or
+    data will be added to already existing files.)
+    """
     for infection_rate in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
         facebook_test("none", 10, infection_rate=infection_rate)
         facebook_test("random", 10, infection_rate=infection_rate)
@@ -95,6 +100,7 @@ def tests_for_figures():
 
 def main():
     tests_for_figures()
+    #single_facebook_test("age", 0.1, 5, 10, 25, 0.05, 0.05, 3)
 
 if __name__ == "__main__":
     main()
