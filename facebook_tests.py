@@ -99,8 +99,7 @@ def tests_for_figures():
         facebook_test("age", 10, infection_rate=infection_rate)
 
 def main():
-    tests_for_figures()
-    #single_facebook_test("age", 0.1, 5, 10, 25, 0.05, 0.05, 3)
+    facebook_test("random", 10)
 
 if __name__ == "__main__":
     main()

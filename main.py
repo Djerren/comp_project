@@ -49,10 +49,13 @@ def verifications():
     print()
     verify_vaccination_rate(sf_network, 10, [10, 100, 200])
 
+def sensitivity_20_procent(parameter):
+    return
 
 if __name__ == "__main__":
-    poster_figures()
-    # alternative_figures("vaccine_spread_effectiveness")
+    # poster_figures()
+    alternative_figures("vaccine_spread_effectiveness")
+    alternative_figures("vaccine_mortality_effectiveness")
     # compare_figures("incubation_period")
     # verifications()
 

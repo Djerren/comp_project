@@ -211,13 +211,13 @@ def graph_methods(data, parameter):
             file_names.append(f"1.0_5_10_{p}_0.05_0.05.txt")
     elif parameter == "vaccine_spread_effectiveness":
         none_method = False
-        parameters = [0.03, 0.05, 0.07, 0.10]
+        parameters = [0.03, 0.04, 0.05, 0.06, 0.07]
         file_names = []
         for p in parameters:
             file_names.append(f"1.0_5_10_25_{format(p, '.2f')}_0.05.txt")
     else:
         none_method = False
-        parameters = [0.03, 0.05, 0.07, 0.10]
+        parameters = [0.03, 0.04, 0.05, 0.06, 0.07]
         file_names = []
         for p in parameters:
             file_names.append(f"1.0_5_10_25_0.05_{format(p, '.2f')}.txt")
