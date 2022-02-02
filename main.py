@@ -1,6 +1,6 @@
 import networkx as nx
 from code.helper_functions import sensitivity
-from code.visualise import draw_graph_simple, get_average, graph_methods, compare_methods, print_network, boxplot
+from code.visualise import get_average, graph_methods, compare_methods
 from code.verification import verify_incubation_period_and_infection_time, verify_infect, verify_infection_rate, verify_vaccination_rate
 
 def poster_figures():

@@ -1,6 +1,8 @@
-# This file consists of some functions with which one can test the model on correctness.
-# only checks the basic model, the rest is more difficult to check and we do that just by
-# checking if the results make sense.
+"""
+This file consists of some functions with which one can test the model on correctness.
+only checks the basic model, the rest is more difficult to check and we do that just by
+checking if the results make sense.
+"""
 
 import networkx as nx
 from code.model import Model
