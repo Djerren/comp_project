@@ -3,7 +3,6 @@
 
 import networkx as nx
 import numpy as np
-
 from code.visualise import get_average
 
 def get_vulnerabilities(number):
@@ -78,6 +77,10 @@ def facebook_network():
     return network
 
 def sensitivity(parameter):
+    """
+    This function prints the sensitivity for each parameter.
+    """
+    # Get averages of 20% deviations
     if parameter == "incubation_period":
         file = open("stats/fb_random_1.0_4_10_25_0.05_0.05.txt")
         avg_infected_1 = get_average(file, 2)[0]
@@ -114,6 +117,7 @@ def sensitivity(parameter):
         avg_infected_2 = get_average(file, 2)[0]
         avg_death_2 = get_average(file, 3)[0]
     
+    # Calculate differences on deviations
     diff_infected = abs(avg_infected_1 - avg_infected_2) / 2
     diff_death = abs(avg_death_1 - avg_death_2) / 2
     center_infected = (avg_infected_1 + avg_infected_2) / 2
