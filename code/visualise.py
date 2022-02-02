@@ -89,6 +89,7 @@ def get_average(file, index):
     """
     This function gives the average value and standard deviation for the data in a file.
     """
+    file.seek(0)
     list = []
     for line in file:
         line_split = line.split(";")

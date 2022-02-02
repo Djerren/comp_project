@@ -4,6 +4,8 @@
 import networkx as nx
 import numpy as np
 
+from code.visualise import get_average
+
 def get_vulnerabilities(number):
     """
     This function generates the vulnerabilities of the nodes according to an age distribution.
@@ -74,3 +76,49 @@ def facebook_network():
         edges.append((int(edge[0]),int(edge[1])))
     network.add_edges_from(edges)
     return network
+
+def sensitivity(parameter):
+    if parameter == "incubation_period":
+        file = open("stats/fb_random_1.0_4_10_25_0.05_0.05.txt")
+        avg_infected_1 = get_average(file, 2)[0]
+        avg_death_1 = get_average(file, 3)[0]
+        file = open("stats/fb_random_1.0_6_10_25_0.05_0.05.txt")
+        avg_infected_2 = get_average(file, 2)[0]
+        avg_death_2 = get_average(file, 3)[0]
+    elif parameter == "infection_time":
+        file = open("stats/fb_random_1.0_5_8_25_0.05_0.05.txt")
+        avg_infected_1 = get_average(file, 2)[0]
+        avg_death_1 = get_average(file, 3)[0]
+        file = open("stats/fb_random_1.0_5_12_25_0.05_0.05.txt")
+        avg_infected_2 = get_average(file, 2)[0]
+        avg_death_2 = get_average(file, 3)[0]
+    elif parameter == "vaccination_rate":
+        file = open("stats/fb_random_1.0_5_10_20_0.05_0.05.txt")
+        avg_infected_1 = get_average(file, 2)[0]
+        avg_death_1 = get_average(file, 3)[0]
+        file = open("stats/fb_random_1.0_5_10_30_0.05_0.05.txt")
+        avg_infected_2 = get_average(file, 2)[0]
+        avg_death_2 = get_average(file, 3)[0]
+    elif parameter == "vaccine_spread_effectiveness":
+        file = open("stats/fb_random_1.0_5_10_25_0.04_0.05.txt")
+        avg_infected_1 = get_average(file, 2)[0]
+        avg_death_1 = get_average(file, 3)[0]
+        file = open("stats/fb_random_1.0_5_10_25_0.06_0.05.txt")
+        avg_infected_2 = get_average(file, 2)[0]
+        avg_death_2 = get_average(file, 3)[0]
+    else:
+        file = open("stats/fb_random_1.0_5_10_25_0.05_0.04.txt")
+        avg_infected_1 = get_average(file, 2)[0]
+        avg_death_1 = get_average(file, 3)[0]
+        file = open("stats/fb_random_1.0_5_10_25_0.05_0.06.txt")
+        avg_infected_2 = get_average(file, 2)[0]
+        avg_death_2 = get_average(file, 3)[0]
+    
+    diff_infected = abs(avg_infected_1 - avg_infected_2) / 2
+    diff_death = abs(avg_death_1 - avg_death_2) / 2
+    center_infected = (avg_infected_1 + avg_infected_2) / 2
+    center_death = (avg_death_1 + avg_death_2) / 2
+    
+    print(parameter)
+    print(" - 20% difference infected:", round(100 * diff_infected / center_infected, 1), "%")
+    print(" - 20% difference deaths:  ", round(100 * diff_death / center_death, 1), "%")
