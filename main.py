@@ -50,15 +50,15 @@ def verifications():
     verify_vaccination_rate(sf_network, 10, [10, 100, 200])
 
 if __name__ == "__main__":
-    # poster_figures()
+    poster_figures()
     # alternative_figures("vaccine_mortality_effectiveness")
     # compare_figures("incubation_period")
     # verifications()
-    sensitivity("incubation_period")
-    sensitivity("infection_time")
-    sensitivity("vaccination_rate")
-    sensitivity("vaccine_spread_effectiveness")
-    sensitivity("vaccine_mortality_effectiveness")
+    # sensitivity("incubation_period")
+    # sensitivity("infection_time")
+    # sensitivity("vaccination_rate")
+    # sensitivity("vaccine_spread_effectiveness")
+    # sensitivity("vaccine_mortality_effectiveness")
 
 
 
