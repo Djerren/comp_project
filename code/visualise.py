@@ -3,19 +3,7 @@ This file contains functions to generate plots from the data.
 """
 
 import matplotlib.pyplot as plt
-import numpy as np
-
-def get_average(file, index):
-    """
-    This function gives the average value and standard deviation for the data in a file.
-    """
-    file.seek(0)
-    list = []
-    for line in file:
-        line_split = line.split(";")
-        list += [int(line_split[index])]
-
-    return np.mean(list), np.std(list)
+from code.helper_functions import get_average
 
 def compare_methods(data, parameter):
     """
@@ -183,3 +171,54 @@ def graph_methods(data, parameter):
     plt.xlabel(parameter)
     plt.legend()
     plt.show()
+
+def sensitivity(parameter):
+    """
+    This function prints the sensitivity for each parameter.
+    """
+    # Get averages of 20% deviations
+    if parameter == "incubation_period":
+        file = open("stats/fb_random_1.0_4_10_25_0.05_0.05.txt")
+        avg_infected_1 = get_average(file, 2)[0]
+        avg_death_1 = get_average(file, 3)[0]
+        file = open("stats/fb_random_1.0_6_10_25_0.05_0.05.txt")
+        avg_infected_2 = get_average(file, 2)[0]
+        avg_death_2 = get_average(file, 3)[0]
+    elif parameter == "infection_time":
+        file = open("stats/fb_random_1.0_5_8_25_0.05_0.05.txt")
+        avg_infected_1 = get_average(file, 2)[0]
+        avg_death_1 = get_average(file, 3)[0]
+        file = open("stats/fb_random_1.0_5_12_25_0.05_0.05.txt")
+        avg_infected_2 = get_average(file, 2)[0]
+        avg_death_2 = get_average(file, 3)[0]
+    elif parameter == "vaccination_rate":
+        file = open("stats/fb_random_1.0_5_10_20_0.05_0.05.txt")
+        avg_infected_1 = get_average(file, 2)[0]
+        avg_death_1 = get_average(file, 3)[0]
+        file = open("stats/fb_random_1.0_5_10_30_0.05_0.05.txt")
+        avg_infected_2 = get_average(file, 2)[0]
+        avg_death_2 = get_average(file, 3)[0]
+    elif parameter == "vaccine_spread_effectiveness":
+        file = open("stats/fb_random_1.0_5_10_25_0.04_0.05.txt")
+        avg_infected_1 = get_average(file, 2)[0]
+        avg_death_1 = get_average(file, 3)[0]
+        file = open("stats/fb_random_1.0_5_10_25_0.06_0.05.txt")
+        avg_infected_2 = get_average(file, 2)[0]
+        avg_death_2 = get_average(file, 3)[0]
+    else:
+        file = open("stats/fb_random_1.0_5_10_25_0.05_0.04.txt")
+        avg_infected_1 = get_average(file, 2)[0]
+        avg_death_1 = get_average(file, 3)[0]
+        file = open("stats/fb_random_1.0_5_10_25_0.05_0.06.txt")
+        avg_infected_2 = get_average(file, 2)[0]
+        avg_death_2 = get_average(file, 3)[0]
+    
+    # Calculate differences on deviations
+    diff_infected = abs(avg_infected_1 - avg_infected_2) / 2
+    diff_death = abs(avg_death_1 - avg_death_2) / 2
+    center_infected = (avg_infected_1 + avg_infected_2) / 2
+    center_death = (avg_death_1 + avg_death_2) / 2
+    
+    print(parameter)
+    print(" - 20% difference infected:", round(100 * diff_infected / center_infected, 1), "%")
+    print(" - 20% difference deaths:  ", round(100 * diff_death / center_death, 1), "%")
